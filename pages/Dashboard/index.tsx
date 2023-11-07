@@ -11,7 +11,9 @@ interface VentasMesData {
 const Dashboard: React.FC = () => {
   const [ventasMes, setVentasMes] = useState<VentasMesData[]>([]);
   const [errorMensaje, setErrorMensaje] = useState<string>('');
-  const API = 'http://127.0.0.1:8000/event/ventasMes'
+  const preAPI = process.env.API
+  const postAPI = 'event/ventasMes'
+  const API = `${preAPI}/${postAPI}`
   const [charData, setCharData] = useState<any>(null)
 //   const config = {
 //     headers: {

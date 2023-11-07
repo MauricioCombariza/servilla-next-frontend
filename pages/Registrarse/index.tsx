@@ -1,6 +1,7 @@
 import { Container } from "@mui/system";
 import React from "react";
 import { ButtonSer, ButtonType } from "../../components/ButtonSer";
+import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { usePostSignup, SignupType } from "../../Hooks/usePostSignup";
 import { useAuth, AuthContextProps } from "../../Auth";
 
@@ -18,10 +19,20 @@ function Registrarse () {
     const auth = useAuth()
     const form = React.useRef(null)
 
-    const OnFormSubmit = (dataForm: SignupType) => usePostSignup(dataForm)
+    const [isLoading, setIsLoading] = React.useState(false)
+
+    const OnFormSubmit = async (dataForm: SignupType) => {
+        setIsLoading(true); // Marca como cargando al iniciar la solicitud
+        await usePostSignup(dataForm);
+        setIsLoading(false); // Marca como no cargando al completar la solicitud
+      };
 
     const signup = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        const preAPI = process.env.API
+        const postAPI = 'user/signup'
+        const API = `${preAPI}/${postAPI}`
+
         if (form.current) {
           const formData = new FormData(form.current)
           const data: FormData = {
@@ -31,7 +42,7 @@ function Registrarse () {
             company: formData.get('company')?.toString() || null,
             password: formData.get('password')?.toString() || null,
             confirmPassword: formData.get('confirmPassword')?.toString() || null,
-            API: 'http://127.0.0.1:8000/user/signup'
+            API: API
         }
         OnFormSubmit(data) 
         }
@@ -95,6 +106,7 @@ function Registrarse () {
             <ButtonSer type={ButtonType.Submit} name={"REGISTRARSE"} />
             </div>
         </form>
+        {isLoading && <LoadingSpinner />}
         </Container>
     )
 }

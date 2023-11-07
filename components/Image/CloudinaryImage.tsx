@@ -3,7 +3,7 @@ import React from 'react';
 interface ImageProps {
   url: string;
   width: number;
-  height: number;
+  height?: number;
   alt?: string;
 }
 

@@ -1,8 +1,9 @@
 import { Container } from "@mui/system";
-import React from "react";
-import { ButtonSer, ButtonType } from "../ButtonSer";
+import React, { useState } from "react";
+import { ButtonSer, ButtonType } from "../../components/ButtonSer";
 import { usePostInforme, InformeType } from "../../Hooks/usePostInforme";
 import { useAuth, AuthContextProps } from "../../Auth";
+
 
 interface FormData {
   auth: AuthContextProps;
@@ -13,8 +14,8 @@ interface FormData {
 function InformesForm() {
   const auth = useAuth();
   const form = React.useRef(null);
-  const [downloadLink, setDownloadLink] = React.useState<string | null>(null);
-  const [isDownload, setIsDownload] = React.useState<boolean>(false)
+  const [downloadLink, setDownloadLink] = useState<string | null>(null);
+  const [isDownload, setIsDownload] = useState<boolean>(false)
 
   const OnFormSubmit = async (dataForm: InformeType) => {
     

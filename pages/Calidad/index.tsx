@@ -8,7 +8,7 @@ const Calidad = () => {
   return (
     <Layout>
       <div
-    className="container flex items-center justify-center h-screen mt-5 lg:mt-1"
+    className="container flex items-center justify-center h-screen md:mt-5 lg:mt-1"
   >
     <Card sx={{ maxWidth: 600, p:1, backgroundColor: green[500]}}>
       <CardMedia

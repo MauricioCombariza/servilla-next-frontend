@@ -4,23 +4,31 @@ import { CloudinaryImage } from "../../components/Image/CloudinaryImage";
 function HomePage(): JSX.Element {
   return (
     <Layout>
-      <div className="wrapper pt-20 grid bg-darkser">
+      <div className="wrapper pt-10 md:pt-20 grid bg-darkser">
         <div className="uno invisible md:visible flex justify-center content-center bg-ser">
           <CloudinaryImage
           url="v1643213357/Servilla/delivery3_imei5v.webp"
           width={220}
           height={260}
           alt="Foto1"
-
           />
         </div>
-        <div className="dos flex col-start-1 md:col-start-2 col-end-3 justify-center content-center h-86 hidden-sm-only bg-darkser object-cover">
+        <div className="dos flex col-start-1 col-end-5 md:col-start-2 md:col-end-3 justify-center content-center md:h-86 hidden-sm-only bg-darkser object-cover">
+          <div className="md:hidden w-full h-auto flex justify-center items-center">
+            <img
+            src="https://res.cloudinary.com/combariza/image/upload/,c_limit/v1643213349/Servilla/delivery2_djawkh.jpg"
+            className="w-full h-auto" // Mostrar en dispositivos móviles, ocultar en pantallas medianas o más grandes
+            alt="Foto2"
+            />
+          </div>
+        <div className="hidden md:block w-full h-auto">
         <CloudinaryImage
           url="v1643213349/Servilla/delivery2_djawkh.jpg"
           width={200}
           height={260}
           alt="Foto2"
           />
+        </div>
         </div>
         <div className="tres invisible md:visible flex justify-center content-center h-86 bg-dark-ser">
         <CloudinaryImage

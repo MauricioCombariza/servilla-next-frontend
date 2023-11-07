@@ -1,36 +1,33 @@
-import { useAuth } from "../../Auth";
-import { Layout } from "@/components/Layout";
-import Link from "next/link";
-import Button from "@mui/material/Button";
+import { useAuth } from "../../Auth"
+import { Layout } from "../../components/Layout"
+// import { Button } from "@mui/material"
+import { ButtonSer, ButtonType } from "@/components/ButtonSer";
+import { useRouter } from 'next/router';
+// import { useNavigate } from "react-router-dom"
 
-const InformesDisponibles: React.FC = () => {
-  const auth = useAuth();
+const InformesDisponibles: () => JSX.Element | null = () => {
 
-  // Función para manejar la redirección y actualizar el estado
-  const handlePendientesMensajeros = () => {
-    auth.setIsMensajero(true);
-  };
+  const auth = useAuth()
+  const router = useRouter()
+  // const navigate = useNavigate()
+  
+  const gestion = () =>{ 
+    const path = '/GestionDocumentos'; 
+    router.push(path);
+    auth.setIsMensajero(true)
+  }
 
-  return (
-    <Layout>
-      <div className="container flex justify-center items-center w-2/3 mt-20 m-6">
-        {/* Utiliza el componente Link de Next.js para la redirección */}
-        <Link href="/informes">
-          <a>
-            <Button
-              onClick={handlePendientesMensajeros}
-              variant="contained"
-              color="success"
-              size="large"
-              fullWidth
-            >
-              Pendientes por mensajero
-            </Button>
-          </a>
-        </Link>
-      </div>
-    </Layout>
-  );
-};
+    return (
+  <Layout>
+       <div className="container flex flex-col justify-around items-center w-2/3 mt-20 m-6">
+       <ButtonSer
+       onClick={gestion}
+       name="Gestión"
+       type={ButtonType.Button}
+       fullWidth={true} />
+       </div>
+  </Layout>
+    )
+}
 
-export default InformesDisponibles;
+export default InformesDisponibles

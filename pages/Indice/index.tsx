@@ -25,7 +25,7 @@ const Indice: React.FC = () => {
     router.push(path);
   }
   const routeInformesForm = () =>{ 
-    const path = '/Informes/Informes-disponibles'; 
+    const path = '/InformesDisponibles'; 
     router.push(path);
   }
   // const routSearchClient = () => {

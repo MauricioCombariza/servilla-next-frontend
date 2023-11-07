@@ -86,7 +86,7 @@ const horizontalNavItems: ListType[] = [
         <HomeIcon sx={{ color:{xs:"green", sm:"white"} }}/>
         ,
         title: "Nosotros",
-        link: "/Nosotros",
+        link: "/",
         nested: true,
         private: false,
         id:400,
@@ -95,7 +95,7 @@ const horizontalNavItems: ListType[] = [
     {
         icon: <PedalBikeIcon sx={{ color:{xs:"green", sm:"white"} }} />,
         title: "Servicios",
-        link: "/Servicios",
+        link: "/",
         private: false,
         nestedServ: true,
         id:401,
