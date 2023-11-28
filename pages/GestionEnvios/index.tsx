@@ -86,9 +86,7 @@ function GestionEnvios() {
         </div>
       </Container>
       {data.map((item) => (
-        // Renderizar cada elemento del resultado
-        <div key={item.serial}>
-          {/* Renderizar contenido de cada elemento */}
+         <div key={item.serial}>
         </div>
       ))}
     </Layout>
