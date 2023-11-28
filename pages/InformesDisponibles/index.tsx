@@ -8,6 +8,7 @@ import { useRouter } from 'next/router';
 const InformesDisponibles: () => JSX.Element | null = () => {
 
   const auth = useAuth()
+  const company = auth.user.company;
   const router = useRouter()
   // const navigate = useNavigate()
   
@@ -33,13 +34,16 @@ const InformesDisponibles: () => JSX.Element | null = () => {
        type={ButtonType.Button}
        fullWidth={true} />
        </div>
+       {company === 11 && (
        <div className="container flex flex-col justify-around items-center w-2/3 mt-20 m-6">
+        
        <ButtonSer
        onClick={gestionOrdenesCarvajal}
        name="Gestión ordenes Carvajal"
        type={ButtonType.Button}
        fullWidth={true} />
        </div>
+       )}
   </Layout>
     )
 }
