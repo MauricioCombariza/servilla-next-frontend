@@ -4,6 +4,11 @@ import Container from '@mui/material/Container';
 import { useAuth } from '../../Auth';
 import { LoadingSpinner } from "../../components/LoadingSpinner";  // Ajusta la ruta a tu ubicación real del componente
 
+interface ApiResponse {
+  data: Array<{ serial: string }>;
+  total_items: number;
+}
+
 function GestionEnvios() {
   const [fechaInicial, setFechaInicial] = useState('');
   const [fechaFinal, setFechaFinal] = useState('');
@@ -11,7 +16,7 @@ function GestionEnvios() {
   const [loading, setLoading] = useState(false); // Estado para controlar la visualización del spinner
   const auth = useAuth();
   const [totalItems, setTotalItems] = useState(0);
-  const [data, setData] = useState([])
+  const [data, setData] = useState<Array<{ serial: string }>>([]);
 
   const handleDescargarArchivo = async () => {
     try {
@@ -35,7 +40,7 @@ function GestionEnvios() {
         },
       });
 
-      const result = await response.json();
+      const result: ApiResponse = await response.json();
 
       setData(result.data);
       setTotalItems(result.total_items);
