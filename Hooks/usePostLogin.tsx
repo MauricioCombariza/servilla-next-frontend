@@ -12,7 +12,8 @@ export const LOADING_STATUS = "LOADING"
 export const ERROR_STATUS = "ERROR"
 
 const usePostLogin = async (loginData: LoginType) => {
-  
+  // console.log('LoginData: ', loginData)
+  const startTimestamp = performance.now();
   const res = await fetch(loginData.API, {
     method: "POST",
     headers: {
@@ -21,9 +22,12 @@ const usePostLogin = async (loginData: LoginType) => {
     },
     body: `email=${loginData.email}&password=${loginData.password}`,
   });
+  const endTimestamp = performance.now();
+  console.log(`Time taken: ${endTimestamp - startTimestamp} ms`);
   const data = await res.json();
-  const tokenActual = data.token["access token"];
   // console.log('TokenData: ', data)
+  const tokenActual = data.token["access token"];
+  // console.log('TokenActual: ', tokenActual)
   const userActual = data.user
   // console.log('UsePostLoginDataUser: ',userActual)
   // console.log('LoginData:', loginData)

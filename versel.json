@@ -1,0 +1,15 @@
+{
+    "routes": [
+        {
+            "src": "/user/login",
+            "methods": [
+                "POST"
+            ],
+            "headers": {
+                "Access-Control-Allow-Origin": "https://www.servilla.com.co",
+                "Access-Control-Allow-Methods": "POST",
+                "Access-Control-Allow-Headers": "*"
+            }
+        }
+    ]
+}

@@ -39,9 +39,9 @@ const Ingresar = () => {
               email: formData.get('email') as string,
               password: formData.get('password') as string
             };
-    
+            console.log('DataIngresar: ', data)
             const response = await OnFormSubmit(data);
-            // console.log('Response: ', response)
+            console.log('Response: ', response)
     
             if (response && response.answer !== undefined) {
               setErrorMensaje(response.answer);
