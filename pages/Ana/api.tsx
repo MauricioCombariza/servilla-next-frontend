@@ -1,0 +1,5 @@
+let api = 'http://127.0.0.1:8000/automate/'
+let api_entities = api + 'entities/'
+let api_archivos = api + 'archivos/'
+let api_contratos = api + 'contratos/'
+let api_robot = api + 'robot/'
