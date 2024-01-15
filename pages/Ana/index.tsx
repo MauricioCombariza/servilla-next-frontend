@@ -4,6 +4,15 @@ import React, { useState, ChangeEvent } from 'react';
 import { Layout } from '@/components/Layout';
 
 const YourPage = () => {
+    const preAPI = process.env.API
+    const postAPI = 'automate'
+    const API_borrar = `${preAPI}/${postAPI}/borrar_archivos/`
+    const API_entities = `${preAPI}/${postAPI}/entities/`
+    const API_unirEntidades = `${preAPI}/${postAPI}/unirEntidades/`
+    const API_archivos = `${preAPI}/${postAPI}/archivos/`
+    const API_unirArchivos = `${preAPI}/${postAPI}/unirArchivos/`
+    const API_calcular_consolidado = `${preAPI}/${postAPI}/calcular_consolidado/`
+    const API_robot = `${preAPI}/${postAPI}/robot/`
     const [current, send] = useMachine(automateMachine);
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [downloadLink, setDownloadLink] = useState<string | null>(null)    
@@ -14,7 +23,7 @@ const YourPage = () => {
     
     const handleStart = async () => {
       try {
-        const response = await fetch('http://127.0.0.1:8000/automate/borrar_archivos/', {
+        const response = await fetch(API_borrar, {
           method: 'POST',
         });
   
@@ -50,7 +59,7 @@ const YourPage = () => {
           console.error('No se ha seleccionado ningún archivo.');
           return;
         }
-        const response = await fetch('http://127.0.0.1:8000/automate/entities/', {
+        const response = await fetch(API_entities, {
           method: 'POST',
           body: formData,
         });
@@ -78,7 +87,7 @@ const YourPage = () => {
 
     const handleJoinEntities = async () => {
       try {
-        const response = await fetch('http://127.0.0.1:8000/automate/unirEntidades/', {
+        const response = await fetch(API_unirEntidades, {
           method: 'POST',
         });
   
@@ -110,7 +119,7 @@ const YourPage = () => {
           console.error('No se ha seleccionado ningún archivo.');
           return;
         }
-        const response = await fetch('http://127.0.0.1:8000/automate/archivos/', {
+        const response = await fetch(API_archivos, {
           method: 'POST',
           body: formData,
         });
@@ -147,7 +156,7 @@ const YourPage = () => {
           console.error('No se ha seleccionado ningún archivo.');
           return;
         }
-        const response = await fetch('http://127.0.0.1:8000/automate/archivos/', {
+        const response = await fetch(API_archivos, {
           method: 'POST',
           body: formData,
         });
@@ -182,7 +191,7 @@ const YourPage = () => {
 
     const handleJoinFiles = async () => {
       try {
-        const response = await fetch('http://127.0.0.1:8000/automate/unirArchivos/', {
+        const response = await fetch(API_unirArchivos, {
           method: 'POST',
         });
   
@@ -203,7 +212,7 @@ const YourPage = () => {
 
     const handleConsolidado = async () => {
       try {
-        const response = await fetch('http://127.0.0.1:8000/automate/calcular_consolidado/', {
+        const response = await fetch(API_calcular_consolidado, {
           method: 'POST',
         });
   
@@ -223,7 +232,7 @@ const YourPage = () => {
 
     const handleDownload = async () => {
       try {
-          const response = await fetch('http://127.0.0.1:8000/automate/robot/', {
+          const response = await fetch(API_robot, {
               method: 'POST',
           });
   
