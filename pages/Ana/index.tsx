@@ -196,9 +196,7 @@ const YourPage = () => {
         });
   
         if (response.ok) {
-          // Manejar la respuesta como desees
           console.log('La unión de los archivos fue exitosa!!.');
-          // Puedes realizar cualquier otra acción después de una respuesta exitosa
           send({ type: 'OK' });
         } else {
           const errorResult = await response.json();
