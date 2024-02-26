@@ -29,6 +29,9 @@ export default function App({ Component, pageProps }: AppProps) {
           }}
         />
         {/* End Google Tag Manager - Sección del body */}
+        {/* <!-- Start of HubSpot Embed Code --> */}
+          <script type="text/javascript" id="hs-script-loader" async defer src="//js.hs-scripts.com/45377115.js"></script>
+        {/* <!-- End of HubSpot Embed Code --> */}
 
         <link rel="icon" type="image/svg+xml" href="https://res.cloudinary.com/combariza/image/upload/v1695061362/Servilla/servilla_favicon.png" />
         <title>Servilla S.A.S - Solución logística</title>
