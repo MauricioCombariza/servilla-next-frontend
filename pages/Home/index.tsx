@@ -1,9 +1,15 @@
 import { Layout } from "../../components/Layout";
 import { CloudinaryImage } from "../../components/Image/CloudinaryImage";
+import Head from 'next/head';
 
 function HomePage(): JSX.Element {
   return (
     <Layout>
+      <Head>
+        {/* <!-- Start of HubSpot Embed Code --> */}
+          <script type="text/javascript" id="hs-script-loader" async defer src="//js-na1.hs-scripts.com/45377115.js"></script>
+        {/* <!-- End of HubSpot Embed Code --> */}
+      </Head>
       <div className="wrapper pt-10 md:pt-20 grid bg-darkser">
         <div className="uno invisible md:visible flex justify-center content-center bg-ser">
           <CloudinaryImage
