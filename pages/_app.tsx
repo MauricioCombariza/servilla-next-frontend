@@ -3,20 +3,20 @@ import Head from 'next/head';
 import { AuthProvider } from '@/Auth';
 import type { AppProps } from 'next/app';
 import { NavBar } from '@/components/NavBar/NavBarTailwind';
-
-declare global {
-  interface Window {
-    dataLayer: any[];
-  }
-}
+import Script from 'next/script'; // Importa el componente Script
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <AuthProvider>
       <Head>
-        {/* <!-- Google tag (gtag.js) --> */}
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-JCQST79BSL"></script>
-        <script
+        <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
+        {/* Google tag (gtag.js) */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-JCQST79BSL"
+          strategy="lazyOnload"
+        />
+        <Script
+          strategy="lazyOnload"
           dangerouslySetInnerHTML={{
             __html: `
               window.dataLayer = window.dataLayer || [];
@@ -35,9 +35,12 @@ export default function App({ Component, pageProps }: AppProps) {
           }}
         />
         {/* End Google Tag Manager - Sección del body */}
-        {/* <!-- Start of HubSpot Embed Code --> */}
-        <script async defer src="//js.hs-scripts.com/45377115.js"></script>
-        {/* <!-- End of HubSpot Embed Code --> */}
+        {/* Start of HubSpot Embed Code */}
+        <Script
+          src="//js.hs-scripts.com/45377115.js"
+          strategy="lazyOnload"
+        />
+        {/* End of HubSpot Embed Code */}
 
         <link rel="icon" type="image/svg+xml" href="https://res.cloudinary.com/combariza/image/upload/v1695061362/Servilla/servilla_favicon.png" />
         <title>Servilla S.A.S - Solución logística</title>
