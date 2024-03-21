@@ -220,8 +220,8 @@ const horizontalNavItems: ListType[] = [
     },
     {
         icon: <PrintIcon sx={{ color:"white", "& :hover": { color: "Green" } }}/>,
-        title: "Impresión",
-        link: "/Servicio/Impresion",
+        title: "Dropshipping",
+        link: "/Servicio/Dropshipping",
         private: false,
         id:302,
         className: ''
