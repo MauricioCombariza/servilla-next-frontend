@@ -1,6 +1,8 @@
 import { useMachine } from '@xstate/react';
 import automateMachine from '../../Automatized/ana';
 import React, { useState, ChangeEvent } from 'react';
+
+
 import { Layout } from '@/components/Layout';
 
 const YourPage = () => {

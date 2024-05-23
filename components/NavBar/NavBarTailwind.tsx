@@ -41,14 +41,19 @@ const NavBar = () => {
 return (
 <>
 <AppBar>
-<nav className='flex justify-between static w-full bg-ser lg:py-3 top-0'>
-    <Link href="/"> 
-            <img
-                src="https://res.cloudinary.com/combariza/image/upload/c_fill,w_200,h_50/v1643312479/Servilla/servilla_logo_white_pzdmwm.png"
-                alt="logo1"
-                className="absolute cursor-pointer pt-3 pl-2 lg:pt-0"
-              />
-        </Link>
+<nav className='flex flex-col sm:flex-row justify-between static w-full bg-ser lg:py-3 top-0'>
+<div className="flex items-center justify-start lg:justify-center space-x-6">
+  <Link href="/"> 
+    <img
+      src="https://res.cloudinary.com/combariza/image/upload/c_fill,w_200,h_50/v1643312479/Servilla/servilla_logo_white_pzdmwm.png"
+      alt="logo1"
+      className="cursor-pointer pt-3 pl-2 lg:pt-0"
+    />
+  </Link>
+  <Link href="/Aplicacion"> 
+    <button className='bg-white text-green-500 px-4 py-2 rounded text-2xl'>APP</button>
+  </Link>
+</div>
     <ul className='flex items-center text-white gap-3'>
           {horizontalNavItems.map((item) => (
             (item.private === auth.authorized?
