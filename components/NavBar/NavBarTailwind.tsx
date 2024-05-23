@@ -78,6 +78,7 @@ return (
             size='large'
             sx={{ flexGrow: 1, display: { xs: "block", sm: "none" } }}
             onClick={()=>setOpen(true)}
+            onTouchEnd={()=>setOpen(true)}
             >
                 <MenuIcon />
             </IconButton>
