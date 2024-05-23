@@ -3,6 +3,7 @@ import automateMachine from '../../Automatized/entregarPaquetes';
 import React, { useState, ChangeEvent } from 'react';
 import Foto from './Foto';
 import Camara from './Camara'
+import CapturePhoto from './CapturePhoto';
 import { Layout } from '@/components/Layout';
 
 const contraseña = [
@@ -585,7 +586,7 @@ const YourPage = () => {
       )}
       {current.matches('foto') && (
         <div className="w-full max-w-md mx-auto">
-          <Camara />
+          <CapturePhoto />
           <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                     type="button"
                     onClick={handleCancel}>
