@@ -6,6 +6,11 @@ function HomePage(): JSX.Element {
   return (
     <Layout>
       <div className="wrapper pt-10 md:pt-20 grid bg-darkser">
+      <div className="absolute z-10 w-full text-center md:hidden">
+      <h3 className="fixed top-30 w-full text-center text-white bg-black bg-opacity-50 py-2 text-2xl">
+        Desde 1973 entregando su correspondencia
+      </h3>
+        </div>
       <div className="relative uno flex justify-center content-center bg-ser image-container">
         <Link href="/Servicio/Distribucion">
         <div className="flex justify-center items-center h-full w-full cursor-pointer">
@@ -129,7 +134,7 @@ function HomePage(): JSX.Element {
           </div>
           </Link>
         </div>
-        <div className="seis flex bg-darkser">
+        <div className="invisible md:visible seis flex bg-darkser">
           <h1>
           <CloudinaryImage
           url="v1643312465/Servilla/servilla_logo_qejs06.png"
