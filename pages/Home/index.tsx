@@ -8,16 +8,27 @@ function HomePage(): JSX.Element {
       <div className="wrapper pt-10 md:pt-20 grid bg-darkser">
       <div className="relative uno flex justify-center content-center bg-ser image-container">
         <Link href="/Servicio/Distribucion">
-          <div className="flex justify-center items-center h-full w-full sm:w-auto cursor-pointer">
+        <div className="flex justify-center items-center h-full w-full cursor-pointer">
+          <div className="w-full h-auto flex justify-center items-center">
+          <div className="md:hidden w-full h-auto flex justify-center items-center">
+              <img
+                src="https://res.cloudinary.com/combariza/image/upload/c_crop,g_center,z_0.5/v1643213357/Servilla/delivery3_imei5v.webp"
+                className="w-full h-auto"
+                alt="Foto2"
+              />
+            </div>
+            <div className='hidden md:block w-full h-auto'>
             <CloudinaryImage
               url="v1643213357/Servilla/delivery3_imei5v.webp"
               width={220}
               height={260}
               alt="Foto1"
             />
+            </div>
             <div className="absolute inset-0 flex justify-end items-end sm:opacity-0 sm:hover:opacity-100 bg-black bg-opacity-50 text-white text-center p-2 sm:justify-center sm:items-center">
               <span>Distribución</span>
             </div>
+          </div>
           </div>
         </Link>
       </div>
@@ -47,48 +58,75 @@ function HomePage(): JSX.Element {
         </div>
         <div className="relative tres flex justify-center content-center h-86 bg-ser image-container">
         <Link href="/Servicio/Fulfillment">
-          <div className="relative tres flex justify-center content-center h-86 bg-ser">
+        <div className="relative tres flex justify-center content-center h-86 bg-ser">
+          <div className="md:hidden w-full h-auto flex justify-center items-center">
+            <img
+              src="https://res.cloudinary.com/combariza/image/upload/c_scale,w_auto/v1720441774/Servilla/inventario.jpg"
+              className="w-full h-auto"
+              alt="Foto3"
+            />
+          </div>
+          <div className="hidden md:block w-full h-auto">
             <CloudinaryImage
               url="v1720441774/Servilla/inventario.jpg"
               width={200}
               height={260}
               alt="Foto3"
             />
-            <div className="absolute inset-0 flex justify-end items-end bg-ser bg-opacity-50 text-white text-center p-2 sm:justify-center sm:items-center sm:opacity-0 sm:hover:opacity-100">
-              <span>Inventario</span>
-            </div>
           </div>
+          <div className="absolute inset-0 flex justify-end items-end bg-ser bg-opacity-50 text-white text-center p-2 sm:justify-center sm:items-center sm:opacity-0 sm:hover:opacity-100">
+            <span>Inventario</span>
+          </div>
+        </div>
         </Link>
         </div>
         <div className="relative cuatro flex justify-center col-start-3 col-end-6 md:col-start-4 md:col-end-5 content-center h-86 bg-darkser image-container">
           <Link href="/Servicio/Alistamiento">
-            <div className="flex justify-center items-center h-full w-full cursor-pointer">
+          <div className="relative flex justify-center items-center h-full w-full cursor-pointer">
+            <div className="md:hidden w-full h-auto flex justify-center items-center">
+              <img
+                src="https://res.cloudinary.com/combariza/image/upload/c_scale,w_auto/v1720442450/Servilla/empaque.jpg"
+                className="w-full h-auto"
+                alt="Foto4"
+              />
+            </div>
+            <div className="hidden md:block w-full h-auto">
               <CloudinaryImage
                 url="v1720442450/Servilla/empaque.jpg"
                 width={200}
                 height={260}
                 alt="Foto4"
               />
-              <div className="absolute inset-0 flex justify-end items-end bg-black bg-opacity-50 text-white p-2 sm:justify-center sm:items-center sm:opacity-0 sm:hover:opacity-100">
-                <span>Alistamiento y embalaje</span>
-              </div>
             </div>
+            <div className="absolute inset-0 flex justify-end items-end bg-black bg-opacity-50 text-white p-2 sm:justify-center sm:items-center sm:opacity-0 sm:hover:opacity-100">
+              <span>Alistamiento y embalaje</span>
+            </div>
+          </div>
           </Link>
         </div>
         
         <div className="relative cinco flex justify-center content-center bg-ser image-container">
           <Link href="/Servicio/Dropshipping">
-            <div className="w-full h-auto cursor-pointer">
+          <div className="relative w-full h-auto cursor-pointer">
+            <div className="md:hidden w-full h-auto flex justify-center items-center">
+              <img
+                src="https://res.cloudinary.com/combariza/image/upload/c_scale,w_auto/v1720447327/Servilla/dropshipping.jpg"
+                className="w-full h-auto"
+                alt="Foto5"
+              />
+            </div>
+            <div className="hidden md:block w-full h-auto">
               <CloudinaryImage
                 url="v1720447327/Servilla/dropshipping.jpg"
                 width={220}
                 height={260}
                 alt="Foto5"
               />
-              <div className="absolute inset-0 flex justify-end items-end bg-black bg-opacity-50 text-white p-2 sm:justify-center sm:items-center sm:opacity-0 sm:hover:opacity-100">
-                <span>Dropshipping</span>
-              </div>
             </div>
+            <div className="absolute inset-0 flex justify-end items-end bg-black bg-opacity-50 text-white p-2 sm:justify-center sm:items-center sm:opacity-0 sm:hover:opacity-100">
+              <span>Dropshipping</span>
+            </div>
+          </div>
           </Link>
         </div>
         <div className="seis flex bg-darkser">
