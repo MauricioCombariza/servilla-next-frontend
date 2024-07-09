@@ -43,3 +43,59 @@
   height: 40vh;
   color: white;
 }
+
+@media (max-width: 768px) {
+  body {
+    margin: 0;
+    padding: 0;
+  }
+
+  /* Asume que .primer-elemento es la clase del primer elemento de texto después del navbar */
+  .primer-elemento {
+    margin-top: 0; /* Elimina el margen superior */
+  }
+   
+  .wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0; /* Elimina el espacio entre imágenes */
+    background-color: #2d3748; /* Cambia el color de fondo a gris 800 */
+  }
+
+  .image-container {
+    width: 100%; /* Asegura que el contenedor ocupe el ancho completo en móviles */
+  }
+  .image-container .absolute {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background-color: transparent; /* Hace el fondo transparente */
+    color: white; /* Asegura que el texto sea blanco */
+    text-align: right; /* Alinea el texto a la derecha */
+    padding: 10px; /* Agrega un poco de padding para no pegar el texto a la esquina */
+  }
+
+  .image-container .absolute span {
+    display: inline-block; /* Hace que el span sea inline-block para poder aplicar padding */
+    background-color: rgba(0, 0, 0, 0.5); /* Fondo semi-transparente para mejorar la legibilidad */
+    padding: 5px 10px; /* Añade padding alrededor del texto */
+    border-radius: 5px; /* Opcional: añade bordes redondeados al fondo del texto */
+  }
+
+  .image-container img, .image-container .CloudinaryImage {
+    width: 100%; /* Ajusta el ancho de las imágenes al 100% del contenedor */
+    height: auto; /* Mantiene la proporción de las imágenes */
+    margin-bottom: 0; /* Elimina el espacio entre imágenes */
+  }
+
+  /* Asegúrate de que todos los contenedores de imágenes sean visibles en móviles */
+  .uno, .dos, .tres, .cuatro, .cinco {
+    visibility: visible;
+    transform: none; /* Remueve la rotación para una mejor visualización en móviles */
+  }
+  /* Coloca la parte seis al principio */
+  .seis {
+    order: -1; /* Esto asegura que la parte seis vaya al principio */
+  }
+}

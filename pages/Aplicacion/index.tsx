@@ -1,46 +1,49 @@
 import { useMachine } from '@xstate/react';
 import automateMachine from '../../Automatized/entregarPaquetes';
-import React, { useState, ChangeEvent } from 'react';
-import Foto from './Foto';
-import Camara from './Camara'
-import CapturePhoto from './CapturePhoto';
-import { Layout } from '@/components/Layout';
+import React, { useState, ChangeEvent, use } from 'react';
+import IngresoAdmon from './aministracion/IngresoAdmon';
+import ModulosAdmon from './aministracion/ModulosAdmon';
+import MenuInventario from './aministracion/MenuInventario';
+import Modulos from './base/Modulos';
+import Ingreso from './base/Ingreso';
+import Ordenes from './aministracion/Ordenes';
+import Datos from './mensajeros/Datos';
+import Nequi from './mensajeros/Nequi';
+import Efectivo from './mensajeros/Efectivo';
+import Devolucion from './mensajeros/Devolucion';
+import FotoModule from './mensajeros/Foto';
+import Verificado from './base/Verificado';
+import Finalizar from './base/Finalizar';
+import CambioContrasena from './aministracion/CambioContrasena';
+import Dinero from './mensajeros/Dinero';
+import SinCobro from './mensajeros/SinCobro';
+import Otra from './mensajeros/Otra';
+import Cajoneras from './procesos/Cajoneras';
+import NequiEfectivo from './mensajeros/NequiEfectivo';
+import ConsumoPorOrden from './aministracion/ConsumoPorOrden';
+import {handleUploadOrders, handleUploadContracts} from './funciones/funciones_base';
+import { handleFoto_base } from './funciones/handle_foto';
+import WhatsApp from './procesos/WhatsApp';
 
-const contraseña = [
-    {
-        "id": 1,
-        "password": "1234"
-    },
-    {
-        "id": 2,  
-        "password": "1234"
-    },  
-]
-
-const checkCredentials = (code: number, password: string) => {
-    return contraseña.some(item => item.id === code && item.password === password);
+interface ValidateCredentialsResult {
+  rol: number; // Ajusta el tipo según sea necesario
+  username: string; // Ajusta el tipo según sea necesario
 }
 
 
-
 const YourPage = () => {
-    const preAPI = process.env.API
+    const preAPI = process.env.DEV_API
     const postAPI = 'automate'
-    const API_borrar = `${preAPI}/${postAPI}/borrar_archivos/`
-    const API_entities = `${preAPI}/${postAPI}/entities/`
-    const API_unirEntidades = `${preAPI}/${postAPI}/unirEntidades/`
     const API_archivos = `${preAPI}/${postAPI}/archivos/`
-    const API_unirArchivos = `${preAPI}/${postAPI}/unirArchivos/`
-    const API_calcular_consolidado = `${preAPI}/${postAPI}/calcular_consolidado/`
-    const API_robot = `${preAPI}/${postAPI}/robot/`
     const [current, send] = useMachine(automateMachine);
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [downloadLink, setDownloadLink] = useState<string | null>(null)   
-     
-    
-    const [code, setCode] = useState('');
+   
+    const [email, setEmail] = useState('');
+    const [cod_men, setCodMen] = useState(0);
     const [password, setPassword] = useState('');
-
+    const [order, setOrder] = useState(0);
+    
     // Inicializa el estado para el número de guía y el método de pago
     const [guideNumber, setGuideNumber] = React.useState('');
     const [paymentMethod, setPaymentMethod] = React.useState('Nequi');
@@ -48,108 +51,107 @@ const YourPage = () => {
     const [entidad, setEntidad] = useState('');
     const [value, setValue] = useState(0);
     const [value1, setValue1] = useState(0);
-
-    // Maneja el cambio en el campo de entrada del número de guía
-    const handleGuideNumberChange = (event: ChangeEvent<HTMLInputElement>) => {
-      setGuideNumber(event.target.value);
-    };
-
-    // Maneja el cambio en el campo de entrada del método de pago
-    const handlePaymentMethodChange = (event: ChangeEvent<HTMLSelectElement>) => {
-      setPaymentMethod(event.target.value);
-    };
-
+    const [moduloSiguiente, setModuloSiguiente] = useState('');
+    const [rol, setRol] = useState(0);
+    const [username, setUsername] = useState('');
     
-    const handleCredentials = () => {
-        const codeNumber = Number(code);
-        if (checkCredentials(codeNumber, password)) {
-            send({ type: 'START' });
-        }
+    const handleUploadOrdersBase = async () => {
+      return await handleUploadOrders({ selectedFile, order, send });
+   }
+
+   const handleFoto = async (method: 'nequi' | 'efectivo' | 'otro' | 'devolucion'| 'sin_cobro', value: number) => {
+    const paymentMethod = method;
+    return await handleFoto_base({ send, consignee, value, cod_men, entidad, guideNumber, paymentMethod, moduloSiguiente});
+ }
+
+   
+    const cajoneras = () => {
+      send({ type: 'CAJONERAS' });
     };
 
-    const handleSubmit = (event: React.MouseEvent<HTMLButtonElement>) => {
-      event.preventDefault();
-      if (paymentMethod === 'Nequi') {
-        send({ type: 'NEQUI' });
-      }
-      if (paymentMethod === 'Efectivo') {
-        send({ type: 'EFECTIVO' });
-      }
-      if (paymentMethod === 'Efectivo_Nequi') {
-        send({ type: 'NEQUI_EFECTIVO' });
-      }
-      if (paymentMethod === 'Otra') {
-        send({ type: 'OTRA' });
-      }
-      if (paymentMethod === 'Sin_Cobro') {
-        send({ type: 'SIN_COBRO' });
-      }
-      if (paymentMethod === 'Devolucion') {
-        send({ type: 'DEVOLUCION' });
-      }
-    };
-    
-    
+    const modulos_admon = () => {
+      send({ type: 'MODULOSADMON' });
+    }
 
-     
-    const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
-      const target = event.target as HTMLInputElement;
-      // Guarda el archivo seleccionado en una variable del estado o cualquier otra estructura de datos
-      if (target.files && target.files.length > 0) {
-        setSelectedFile(target.files[0]);
-      }
+    const pistoleo = () => {
+      send({ type: 'PISTOLEO' });
     };
 
-    
+    const cambio_contrasena = () => {
+      send({ type: 'START' });
+    };
+
+    const whatsapp = () => {
+      send({ type: 'WHATSAPP' });
+    };
+    const ordenes = () => {
+      send({ type: 'ORDENES' });
+    };
+
+    const menu_inventario = () => {
+      send({ type: 'MENUINVENTARIO' });
+    };
+
+    const dinero = () => {
+      send({ type: 'DINERO' });
+    };
+
+    const onInventarioClick = () => {
+      send({ type: 'CONSUMOPORORDEN' });
+    };
+
+    const onInventarioTouch = () => {
+      send({ type: 'CONSUMOPORORDEN' });
+    };
+
+    const onCrearInventarioClick = () => {
+      send({ type: 'INGRESARPRODUCTO' });
+    };
+
+    const onCrearInventarioTouch = () => {
+      send({ type: 'INGRESARPRODUCTO' });
+    };
 
     const handleCancel = () => {
       send({ type: 'CANCEL' });
     };
-    const handleFoto = () => {
-      send({ type: 'FOTO' });
-    };
+    
     const handleDatos = () => {
       send({ type: 'DATOS' });
     };
 
     const handleFinalizar = () => {
+      console.log('Finalizar');
       send({ type: 'FINALIZAR' });
     };
+
+    const handleVerificado = () => {
+      console.log('Verificado');
+      send({ type: 'VERIFICADO' });
+    };
+
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      if (e.target.files) {
+        const file = e.target.files[0];
+        setSelectedFile(file);      }
+    };
     
-    const handleUploadContracts = async () => {
-      try {
-        const formData = new FormData();
-        if (selectedFile) {
-          formData.append('file', selectedFile);
-        } else {
-          console.error('No se ha seleccionado ningún archivo.');
-          return;
-        }
-        const response = await fetch(API_archivos, {
-          method: 'POST',
-          body: formData,
-        });
     
-        if (response.ok) {
-          const result = await response.json();
-          console.log('La llamada a la API Contract fue exitosa:', result);
-          // Puedes realizar cualquier otra acción después de una respuesta exitosa
-          send({ type: 'UPLOAD_CONTRACTS' });
-        } else {
-          const errorResult = await response.json();
-          console.error('Error en la llamada a la API:', errorResult);
-        }
-      } catch (error: any) {
-        console.error('Error al realizar la llamada a la API:', error.message);
-      }
+    const handleUploadContractsBase = async () => {
+      const handleContract = await handleUploadContracts({ 
+        selectedFile, 
+        API_archivos, 
+        send, 
+        handleFileChange, 
+        handleUploadContracts 
+      });
       return (
         <div>
           <input type="file" onChange={handleFileChange} />
-          <button onClick={handleUploadContracts}>Subir Archivo</button>
+          <button onClick={() => handleUploadContractsBase()}>Subir Archivo</button>
         </div>
       );
     };
-
     
 
     
@@ -200,417 +202,34 @@ const YourPage = () => {
           <div className="bg-white p-12 rounded shadow-lg">
             <p className="mb-4 text-green-700">Estado actual: {JSON.stringify(current.value)}</p>
 
-             
-    
-            {current.matches('ingreso') && (
-            <div className="w-full max-w-xs mx-auto mt-6">
-                <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-                <div className="mb-4">
-                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="code">
-                    Número de código:
-                    </label>
-                    <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="code" type="text" placeholder="Código" value={code} onChange={e => setCode(e.target.value)} />
-                </div>
-                <div className="mb-6">
-                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
-                    Contraseña:
-                    </label>
-                    <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="password" type="password" placeholder="******************" value={password} onChange={e => setPassword(e.target.value)} />
-                </div>
-                <div className="flex items-center justify-between">
-                    <button
-                    className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                    type="button"
-                    onClick={handleCredentials}
-                    onTouchEnd={handleCredentials}
-                    >
-                    Ingreso
-                    </button>
-                </div>
-                </form>
-            </div>
-            )}
-                    
-              {current.matches('datos') && (
-              <div className="w-full max-w-md mx-auto mt-6">
-                <h1 className='bg-blue-500 text-2xl text-white text-center py-2 mb-4 mx-2'>Ingresar datos entrega</h1>
-                <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-                  <div className="mb-4">
-                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="guideNumber">
-                      Número de guía:
-                    </label>
-                    <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" id="guideNumber" onChange={handleGuideNumberChange} />
-                  </div>
-                  <div className="mb-4">
-                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="paymentMethod">
-                      Método de pago:
-                    </label>
-                    <select className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    id="paymentMethod"
-                    onChange={handlePaymentMethodChange}>
-                      <option value="Nequi">Nequi</option>
-                      <option value="Efectivo">Efectivo</option>
-                      <option value="Efectivo_Nequi">Efectivo-Nequi</option>
-                      <option value="Sin_Cobro">Sin Cobro</option>
-                      <option value="Otra">Otra</option>
-                      <option value="Devolucion">Devolucion</option>
-                    </select>
-                  </div>
-                  
-                  <div className="flex items-center justify-between">
-                  <button className="bg-green-500 hover:bg-green-800 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                  type="button"
-                  onClick={handleSubmit}
-                  >
-                      Aceptar
-                    </button>
-                    <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                    type="button"
-                    onClick={handleCancel}>
-                      Cancelar
-                    </button>
-                  </div>
-                </form>
-              </div>
-            )}
-            {current.matches('nequi') && (
-        <div className="w-full max-w-xs mx-auto mt-4">
-          <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-            <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="consignee">
-                Consignatario
-              </label>
-              <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                id="consignee"
-                type="text"
-                value={consignee}
-                onChange={e => setConsignee(e.target.value)}
-              />
-            </div>
-            <div className="mb-6">
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="value">
-                Valor
-              </label>
-              <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                id="value"
-                type="number"
-                value={value}
-                onChange={e => setValue(Number(e.target.value))}
-              />
-            </div>
-            <div className="flex items-center justify-between">
-              <button
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                type="button"
-                onClick={handleFoto}
-              >
-                FOTO
-              </button>
-              <button
-                className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                type="button"
-                onClick={handleDatos}
-              >
-                ATRAS
-              </button>
-              <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                    type="button"
-                    onClick={handleCancel}>
-                      CANCELAR
-                    </button>
-            </div>
-          </form>
-        </div>
-      )}
-      {current.matches('efectivo') && (
-        <div className="w-full max-w-xs mx-auto mt-4">
-          <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-            <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="consignee">
-                Consignatario
-              </label>
-              <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                id="consignee"
-                type="text"
-                value={consignee}
-                onChange={e => setConsignee(e.target.value)}
-              />
-            </div>
-            <div className="mb-6">
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="value">
-                Valor
-              </label>
-              <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                id="value"
-                type="number"
-                value={value}
-                onChange={e => setValue(Number(e.target.value))}
-              />
-            </div>
-            <div className="flex items-center justify-between">
-              <button
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                type="button"
-                // onClick={handleFoto}
-              >
-                FINALIZAR
-              </button>
-              <button
-                className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                type="button"
-                onClick={handleDatos}
-              >
-                ATRAS
-              </button>
-              <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                    type="button"
-                    onClick={handleCancel}>
-                      Cancelar
-                    </button>
-            </div>
-          </form>
-        </div>
-      )}
-      {current.matches('devolucion') && (
-        <div className="w-full max-w-xs mx-auto mt-4">
-          <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-            <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="consignee">
-                Novedad
-              </label>
-              <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                id="consignee"
-                type="text"
-                value={consignee}
-                onChange={e => setConsignee(e.target.value)}
-              />
-            </div>
-            
-            <div className="flex items-center justify-between">
-              <button
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                type="button"
-                onClick={handleFoto}
-              >
-                FOTO
-              </button>
-              <button
-                className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                type="button"
-                onClick={handleDatos}
-              >
-                ATRAS
-              </button>
-              <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                    type="button"
-                    onClick={handleCancel}>
-                      CANCELAR
-                    </button>
-            </div>
-          </form>
-        </div>
-      )}
-      {current.matches('sin_cobro') && (
-        <div className="w-full max-w-xs mx-auto mt-4">
-          <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-            <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="consignee">
-                Persona que recibe
-              </label>
-              <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                id="consignee"
-                type="text"
-                value={consignee}
-                onChange={e => setConsignee(e.target.value)}
-              />
-            </div>
-            
-            <div className="flex items-center justify-between">
-              <button
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                type="button"
-                onClick={handleFoto}
-              >
-                FOTO
-              </button>
-              <button
-                className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                type="button"
-                onClick={handleDatos}
-              >
-                ATRAS
-              </button>
-              <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                    type="button"
-                    onClick={handleCancel}>
-                      CANCELAR
-                    </button>
-            </div>
-          </form>
-        </div>
-      )}
-      {current.matches('otra') && (
-        <div className="w-full max-w-xs mx-auto mt-4">
-          <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-          <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="consignee">
-                Entidad
-              </label>
-              <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                id="consignee"
-                type="text"
-                value={entidad}
-                onChange={e => setEntidad(e.target.value)}
-              />
-            </div>
-            <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="consignee">
-                Consignatario
-              </label>
-              <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                id="consignee"
-                type="text"
-                value={consignee}
-                onChange={e => setConsignee(e.target.value)}
-              />
-            </div>
-            <div className="mb-6">
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="value">
-                Valor
-              </label>
-              <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                id="value"
-                type="number"
-                value={value}
-                onChange={e => setValue(Number(e.target.value))}
-              />
-            </div>
-            <div className="flex items-center justify-between">
-              <button
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                type="button"
-                onClick={handleFoto}
-              >
-                FOTO
-              </button>
-              <button
-                className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                type="button"
-                onClick={handleDatos}
-              >
-                ATRAS
-              </button>
-              <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                    type="button"
-                    onClick={handleCancel}>
-                      CANCELAR
-                    </button>
-            </div>
-          </form>
-        </div>
-      )}
-      {current.matches('nequi_efectivo') && (
-        <div className="w-full max-w-xs mx-auto mt-4">
-          <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-            <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="consignee">
-                Consignatario
-              </label>
-              <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                id="consignee"
-                type="text"
-                value={consignee}
-                onChange={e => setConsignee(e.target.value)}
-              />
-            </div>
-            <div className="mb-6">
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="value">
-                Nequi
-              </label>
-              <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                id="value"
-                type="number"
-                value={value}
-                onChange={e => setValue(Number(e.target.value))}
-              />
-              
-            </div>
-            <div className="mb-6">
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="value">
-                Efectivo
-              </label>
-              <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                id="value"
-                type="number"
-                value={value1}
-                onChange={e => setValue1(Number(e.target.value))}
-              />
-              
-            </div>
-
-            <div className="flex items-center justify-between">
-              <button
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                type="button"
-                onClick={handleFoto}
-              >
-                FOTO
-              </button>
-              <button
-                className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                type="button"
-                onClick={handleDatos}
-              >
-                ATRAS
-              </button>
-              <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                    type="button"
-                    onClick={handleCancel}>
-                      CANCELAR
-                    </button>
-            </div>
-          </form>
-        </div>
-      )}
-      {current.matches('foto') && (
-        <div className="w-full max-w-md mx-auto">
-          <CapturePhoto />
-          <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                    type="button"
-                    onClick={handleCancel}>
-                      CANCELAR
-          </button>
-          <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                    type="button"
-                    onClick={handleFinalizar}>
-                      FINALIZAR
-          </button>
-        </div>
-        
-      )}
-      {current.matches('finalizar') && (
-        <div className="w-full max-w-md mx-auto">
-          <h1 className='bg-green-300 text-2xl text-white text-center py-2 mb-4 mx-2'>Entrega realizada</h1>
-        
-        </div>
-      )  
-      }
+            {current.matches('modulos') && <Modulos send={send}/>}
+            {current.matches('ingreso') && <Ingreso send={send} cod_men={cod_men} password={password} setUsername={setUsername} setCodMen={setCodMen} setPassword={setPassword} />}     
+            {current.matches('ingreso_admon') && <IngresoAdmon send={send} setUsername={setUsername} setRol={setRol} email={email} setEmail={setEmail} password={password} setPassword={setPassword} />}
+            {current.matches('cambio_contrasena') && <CambioContrasena cambioContrasena={cambio_contrasena} email={email} setEmail={setEmail} password={password} setPassword={setPassword} />} 
+            {current.matches('ordenes') && <Ordenes order={order} setOrder={setOrder} handleFileChange={handleFileChange} handleUploadOrders={handleUploadOrdersBase} handleCancel={handleCancel} />}
+            {current.matches('modulos_admon') && <ModulosAdmon rol={rol} cajoneras={cajoneras} pistoleo={pistoleo} ordenes={ordenes} menu_inventario={menu_inventario} dinero={dinero} whatsapp={whatsapp} handleCancel={handleCancel}/>}
+            {current.matches('datos') && <Datos paymentMethod={paymentMethod} setPaymentMethod={setPaymentMethod} guideNumber={guideNumber} handleCancel={handleCancel} setGuideNumber={setGuideNumber} send={send} />}
+            {current.matches('nequi') && <Nequi consignee={consignee} setModuloSiguiente={setModuloSiguiente} setConsignee={setConsignee} value={value} setValue={setValue} handleFoto={handleFoto} handleDatos={handleDatos} handleCancel={handleCancel} />}
+            {current.matches('efectivo') && <Efectivo consignee={consignee} setPaymentMethod={setPaymentMethod} setConsignee={setConsignee} setModuloSiguiente={setModuloSiguiente} value={value} setValue={setValue} handleFoto={handleFoto} handleDatos={handleDatos} handleCancel={handleCancel} />}
+            {current.matches('devolucion') && <Devolucion consignee={consignee} setConsignee={setConsignee} handleFoto={handleFoto} handleDatos={handleDatos} handleCancel={handleCancel} />}
+            {current.matches('sin_cobro') && <SinCobro setPaymentMethod={setPaymentMethod} consignee={consignee} setModuloSiguiente={setModuloSiguiente} setConsignee={setConsignee} handleFoto={handleFoto} handleDatos={handleDatos} handleCancel={handleCancel} />}
+            {current.matches('otra') && <Otra consignee={consignee} setConsignee={setConsignee} entidad={entidad} setEntidad={setEntidad} value={value} setValue={setValue} handleFoto={handleFoto} handleDatos={handleDatos} handleCancel={handleCancel} />}
+            {current.matches('nequi_efectivo') && <NequiEfectivo setModuloSiguiente={setModuloSiguiente} setPaymentMethod={setPaymentMethod} consignee={consignee} setConsignee={setConsignee} value={value} setValue={setValue} value1={value1} setValue1={setValue1} handleFoto={handleFoto} handleDatos={handleDatos} handleCancel={handleCancel} />}
+            {current.matches('foto') && <FotoModule handleCancel={handleCancel} handleFinalizar={handleFinalizar} />}
+            {current.matches('dinero') && <Dinero username={username} handleVerificado={handleVerificado} handleCancel={handleCancel}/>}
+            {current.matches('menu_inventario') && <MenuInventario handleCancel={handleCancel} onInventarioClick={onInventarioClick} onInventarioTouch={onInventarioTouch} onCrearInventarioClick={onCrearInventarioClick} onCrearInventarioTouch={onCrearInventarioTouch} />}
+            {current.matches('consumo_por_orden') && <ConsumoPorOrden send={send} handleCancel={handleCancel}/>}
+            {current.matches('cajoneras') && <Cajoneras username={username} modulos_admon={modulos_admon}/>}
+            {current.matches('whatsapp') && <WhatsApp handleCancel={handleCancel}/>}
+            {current.matches('verificado') && <Verificado send={send}/>}
+            {current.matches('finalizar') && <Finalizar send={send}/>}
             
           </div>
         </div>
       );
-    };
+    }
+
     
+  
+  
     export default YourPage;
