@@ -4,7 +4,7 @@ import {
   PasswordInput,
   ButtonsIngresoAdmin,
   validateCredentials
-} from '../funciones/funciones_admon';
+} from '../../../utils/funciones/funciones_admon';
 
 const IngresoAdmon = ({
   send,

@@ -2,7 +2,7 @@ import React, { ChangeEvent, FC } from 'react';
 import {
   validateCredentials,
   validateCredentialsMensajeros,
-  } from '../funciones/funciones_admon';
+  } from '../../../utils/funciones/funciones_admon';
 
 interface IngresoProps {
   cod_men: number;

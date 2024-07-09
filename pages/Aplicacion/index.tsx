@@ -21,8 +21,8 @@ import Otra from './mensajeros/Otra';
 import Cajoneras from './procesos/Cajoneras';
 import NequiEfectivo from './mensajeros/NequiEfectivo';
 import ConsumoPorOrden from './aministracion/ConsumoPorOrden';
-import {handleUploadOrders, handleUploadContracts} from './funciones/funciones_base';
-import { handleFoto_base } from './funciones/handle_foto';
+import {handleUploadOrders, handleUploadContracts} from '../../utils/funciones/funciones_base';
+import { handleFoto_base } from '../../utils/funciones/handle_foto';
 import WhatsApp from './procesos/WhatsApp';
 
 interface ValidateCredentialsResult {

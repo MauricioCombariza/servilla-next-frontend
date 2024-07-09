@@ -1,5 +1,5 @@
 import React from 'react'
-import { ButtonModulosAdmin } from '../funciones/funciones_admon';
+import { ButtonModulosAdmin } from '../../../utils/funciones/funciones_admon';
 
 
 

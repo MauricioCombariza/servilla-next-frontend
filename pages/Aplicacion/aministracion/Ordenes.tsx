@@ -1,5 +1,5 @@
 import React, { Dispatch, SetStateAction } from 'react';
-import { OrderInput } from '../funciones/funciones_admon';
+import { OrderInput } from '../../../utils/funciones/funciones_admon';
 
 interface OrdenesProps {
     order: number;
