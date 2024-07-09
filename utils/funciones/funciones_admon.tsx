@@ -109,7 +109,7 @@ export const ButtonModulosAdmin = ({ rol, minRol, onClick, children, hoverColor 
 
   return (
     <button
-      className={`bg-green-400 hover:${hoverColor} text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition-colors duration-200 m-2 w-40 h-12 sm:w-48 sm:h-14`}
+    className={`bg-green-400 hover:${hoverColor} text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition-colors duration-200 my-4 mx-5 sm:mx-3 w-11/12 sm:w-2/5 shadow-lg hover:shadow-xl transform hover:-translate-y-1`}
       type="button"
       onClick={onClick}
     >

@@ -9,7 +9,7 @@ const ModulosAdmon = ({rol, cajoneras, pistoleo, ordenes, menu_inventario, diner
   return (
     <div className="w-full max-w-md mx-auto mt-6">
       <h1 className='text-gray-800 text-2xl text-center py-2 mb-4 mx-2'>Seleccionar módulo</h1>
-      <div className="flex flex-wrap justify-around">
+      <div className="md:grid md:grid-cols-2 gap-4">
         <ButtonModulosAdmin rol={rol} minRol={1} onClick={cajoneras} hoverColor="bg-blue-500">Cajoneras</ButtonModulosAdmin>
         <ButtonModulosAdmin rol={rol} minRol={2} onClick={pistoleo} hoverColor="bg-green-800">Pistoleo</ButtonModulosAdmin>
         <ButtonModulosAdmin rol={rol} minRol={3} onClick={ordenes} hoverColor="bg-yellow-500">Ordenes</ButtonModulosAdmin>
