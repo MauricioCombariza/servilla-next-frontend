@@ -110,7 +110,7 @@ const Dinero: React.FC<DineroProps> = ({ username, handleVerificado,  handleCanc
     const datosVerificados = datos.filter(dato => dato.verificado);
 
     for (const dato of datosVerificados) {
-      const url = `API_SER/actualizar-estado-dinero/${dato.serial}?tipo_de_pago=${metodoVerificacion}&verificacion=${dato.verificado}&verificado_por=${username}&numero_nequi=${dato.numero_nequi}`;
+      const url = `${API_SER}/actualizar-estado-dinero/${dato.serial}?tipo_de_pago=${metodoVerificacion}&verificacion=${dato.verificado}&verificado_por=${username}&numero_nequi=${dato.numero_nequi}`;
       try {
         const response = await fetch(url, {
           method: 'PUT', // Ajusta el método según la API
