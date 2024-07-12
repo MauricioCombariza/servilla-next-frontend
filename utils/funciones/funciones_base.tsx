@@ -3,6 +3,7 @@ import { API_SER } from "@/pages/api";
 interface HandleUploadOrdersParams {
     selectedFile: File | null;
     order: number;
+    id_cliente: number;
     send: (action: { type: string }) => void;
   }
 
@@ -14,7 +15,7 @@ interface HandleUploadContractsParams {
     handleUploadContracts: (params: HandleUploadContractsParams) => Promise<void>;
   }
 
-export const handleUploadOrders = async ({selectedFile, order, send}: HandleUploadOrdersParams) => {
+export const handleUploadOrders = async ({selectedFile, order, id_cliente, send}: HandleUploadOrdersParams) => {
     try {
       const formData = new FormData();
       if (selectedFile) {
@@ -25,7 +26,7 @@ export const handleUploadOrders = async ({selectedFile, order, send}: HandleUplo
         return;
       }
       console.log('API_SER', API_SER);
-      const response = await fetch(`${API_SER}/create_order/?order_number=${order}`, {
+      const response = await fetch(`${API_SER}/create_order/?order_number=${order}&id_cliente=${id_cliente}`, {
         method: 'POST',
         body: formData,
       });

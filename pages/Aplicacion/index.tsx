@@ -43,6 +43,7 @@ const YourPage = () => {
     const [cod_men, setCodMen] = useState(0);
     const [password, setPassword] = useState('');
     const [order, setOrder] = useState(0);
+    const [id_cliente, setIdCliente] = useState(0);
     
     // Inicializa el estado para el número de guía y el método de pago
     const [guideNumber, setGuideNumber] = React.useState('');
@@ -56,7 +57,7 @@ const YourPage = () => {
     const [username, setUsername] = useState('');
     
     const handleUploadOrdersBase = async () => {
-      return await handleUploadOrders({ selectedFile, order, send });
+      return await handleUploadOrders({ selectedFile, order, id_cliente, send });
    }
 
    const handleFoto = async (method: 'nequi' | 'efectivo' | 'otro' | 'devolucion'| 'sin_cobro', value: number) => {
@@ -206,7 +207,7 @@ const YourPage = () => {
             {current.matches('ingreso') && <Ingreso send={send} cod_men={cod_men} password={password} setUsername={setUsername} setCodMen={setCodMen} setPassword={setPassword} />}     
             {current.matches('ingreso_admon') && <IngresoAdmon send={send} setUsername={setUsername} setRol={setRol} email={email} setEmail={setEmail} password={password} setPassword={setPassword} />}
             {current.matches('cambio_contrasena') && <CambioContrasena cambioContrasena={cambio_contrasena} email={email} setEmail={setEmail} password={password} setPassword={setPassword} />} 
-            {current.matches('ordenes') && <Ordenes order={order} setOrder={setOrder} handleFileChange={handleFileChange} handleUploadOrders={handleUploadOrdersBase} handleCancel={handleCancel} />}
+            {current.matches('ordenes') && <Ordenes order={order} id_cliente={id_cliente} setIdCliente={setIdCliente} setOrder={setOrder} handleFileChange={handleFileChange} handleUploadOrders={handleUploadOrdersBase} handleCancel={handleCancel} />}
             {current.matches('modulos_admon') && <ModulosAdmon rol={rol} cajoneras={cajoneras} pistoleo={pistoleo} ordenes={ordenes} menu_inventario={menu_inventario} dinero={dinero} whatsapp={whatsapp} handleCancel={handleCancel}/>}
             {current.matches('datos') && <Datos paymentMethod={paymentMethod} setPaymentMethod={setPaymentMethod} guideNumber={guideNumber} handleCancel={handleCancel} setGuideNumber={setGuideNumber} send={send} />}
             {current.matches('nequi') && <Nequi consignee={consignee} setModuloSiguiente={setModuloSiguiente} setConsignee={setConsignee} value={value} setValue={setValue} handleFoto={handleFoto} handleDatos={handleDatos} handleCancel={handleCancel} />}

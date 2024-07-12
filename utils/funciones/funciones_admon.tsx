@@ -13,7 +13,10 @@ interface OrderInputProps {
   order: number;
   setOrder: Dispatch<SetStateAction<number>>;
 }
-
+interface ClienteInputProps {
+  id_cliente: number;
+  setIdCliente: Dispatch<SetStateAction<number>>;
+}
 interface ButtonModulosAdminProps {
   rol: number;
   minRol: number;
@@ -35,6 +38,16 @@ export const OrderInput = ({order, setOrder}:OrderInputProps) => (
     <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="order" type="text" placeholder="Orden" value={order} onChange={e => setOrder(Number(e.target.value))} />
   </div>
 );
+
+export const ClienteInput = ({id_cliente, setIdCliente}:ClienteInputProps) => (
+  <div className="mb-4">
+    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="order">
+      Cliente_id:
+    </label>
+    <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="order" type="text" placeholder="Orden" value={id_cliente} onChange={e => setIdCliente(Number(e.target.value))} />
+  </div>
+);
+
 
 
 export const EmailInput = ({email, setEmail}:EmailInputProps) => (
