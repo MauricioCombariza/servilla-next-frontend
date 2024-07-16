@@ -183,10 +183,10 @@ const YourPage = () => {
         console.error('Error al realizar la llamada a la API:', error.message);
       }
       return (
-        <div>
+        <>
           <input type="file" onChange={handleFileChange} />
           <button onClick={handleUploadFiles}>Subir Archivo</button>
-        </div>
+        </>
       );
     };
 

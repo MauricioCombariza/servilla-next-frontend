@@ -30,7 +30,7 @@ export const handleUploadOrders = async ({selectedFile, order, id_cliente, send}
         method: 'POST',
         body: formData,
       });
-
+      console.log('response', response);
       if (response.ok) {
         const result = await response.json();
         alert('La orden se generó de forma exitosa!');
@@ -41,6 +41,7 @@ export const handleUploadOrders = async ({selectedFile, order, id_cliente, send}
         const errorResult = await response.json();
         alert(`Se presento un error al crear la orden!`);
         console.error('Error en la llamada a la API:', errorResult);
+        console.error(`Estado de la respuesta: ${response.status} (${response.statusText})`);
       }
     } catch (error: any) {
       console.error('Error al realizar la llamada a la API:', error.message);

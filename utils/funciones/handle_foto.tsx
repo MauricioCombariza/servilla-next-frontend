@@ -49,6 +49,7 @@ export const handleFoto_base = ({
       body: JSON.stringify(requestBody),
     })
     .then(response => {
+      console.log("response", response);
       if (!response.ok) {
         // Si la respuesta no es 2xx, imprime el cuerpo de la respuesta para diagnóstico
         return response.json().then(errorData => {
