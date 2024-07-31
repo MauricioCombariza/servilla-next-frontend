@@ -50,12 +50,12 @@ const Cajoneras: React.FC<CajonerasProps> = ({ username, modulos_admon, handleIn
     
       // Llamar a la función cajoneras_endpoint
       const response = await cajoneras_endpoint(req, res);
-      console.log('Response:', response.body);
+      // console.log('Response:', response.body);
       if (response.statusCode !== 200) {
-        const data = response.body;
-        throw new Error(data.detail || "Error al actualizar el motivo de la cajonera");
+        const data = await response.json();
+        throw new Error("Error al actualizar el motivo de la cajonera");
       }
-      const data = response.body;
+      const data = response.json();
       setError("");
       setSerial("");
     } catch (error) {
