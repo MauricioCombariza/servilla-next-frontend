@@ -18,13 +18,10 @@ const Vision = () => {
       <Typography variant='h4' align='center' sx={{p:1}}> Visión </Typography>
 
       <Typography color="text.primary" sx={{px:5, textAlign: 'justify'}}>
-        En 5 años Servilla S.A.S será reconocida como una organización de
-        soluciones de transporte de bienes y correspondencia, dirigida a ofrecer
-        soluciones de logística donde nuestros principales compromisos serán:
-        Fortalecer las relaciones con nuestros proveedores y clientes. Lograr
-        posicionarse en el mercado de transporte de productos. Adoptar
-        tecnología de punta que permita ser competentes en el mercado
-        manteniendo la disciplina, lealtad y ética con nuestros clientes.
+      Ser reconocidos como líderes en la industria logística,
+      ofreciendo soluciones innovadoras que superen las expectativas de nuestros clientes.
+      Aspiramos a ser el aliado estratégico de elección para emprendedores, pequeñas y mediana empresas en Colombia,
+      contribuyendo al desarrollo económico y social del país.
       </Typography>
       
     </Card>

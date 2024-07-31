@@ -24,6 +24,8 @@ import ConsumoPorOrden from './aministracion/ConsumoPorOrden';
 import {handleUploadOrders, handleUploadContracts} from '../../utils/funciones/funciones_base';
 import { handleFoto_base } from '../../utils/funciones/handle_foto';
 import WhatsApp from './procesos/WhatsApp';
+import { supabase } from '@/supabase';
+import { fetchUserRole } from '@/utils/funciones/funciones_admon';
 
 interface ValidateCredentialsResult {
   rol: number; // Ajusta el tipo según sea necesario
@@ -55,6 +57,22 @@ const YourPage = () => {
     const [moduloSiguiente, setModuloSiguiente] = useState('');
     const [rol, setRol] = useState(0);
     const [username, setUsername] = useState('');
+
+    const getRol = async () => {
+      const user = await supabase.auth.getUser()
+      const user_id = user.data.user?.id ?? '';
+      const email = user.data.user?.email ?? '';
+      setUsername(email);
+      if (user) {
+        const { data, error } = await fetchUserRole(user_id);
+        if (error) {
+          console.error('Error al obtener el rol del usuario:', error.message);
+        }
+        if (data) {
+          setRol(data.rol);
+          }
+      }
+    }
     
     const handleUploadOrdersBase = async () => {
       return await handleUploadOrders({ selectedFile, order, id_cliente, send });
@@ -119,6 +137,10 @@ const YourPage = () => {
     
     const handleDatos = () => {
       send({ type: 'DATOS' });
+    };
+
+    const handleInitial = () => {
+      send({ type: 'INITIAL' });
     };
 
     const handleFinalizar = () => {
@@ -203,27 +225,27 @@ const YourPage = () => {
           <div className="bg-white p-12 rounded shadow-lg">
             <p className="mb-4 text-green-700">Estado actual: {JSON.stringify(current.value)}</p>
 
-            {current.matches('modulos') && <Modulos send={send}/>}
-            {current.matches('ingreso') && <Ingreso send={send} cod_men={cod_men} password={password} setUsername={setUsername} setCodMen={setCodMen} setPassword={setPassword} />}     
-            {current.matches('ingreso_admon') && <IngresoAdmon send={send} setUsername={setUsername} setRol={setRol} email={email} setEmail={setEmail} password={password} setPassword={setPassword} />}
-            {current.matches('cambio_contrasena') && <CambioContrasena cambioContrasena={cambio_contrasena} email={email} setEmail={setEmail} password={password} setPassword={setPassword} />} 
-            {current.matches('ordenes') && <Ordenes order={order} id_cliente={id_cliente} setIdCliente={setIdCliente} setOrder={setOrder} handleFileChange={handleFileChange} handleUploadOrders={handleUploadOrdersBase} handleCancel={handleCancel} />}
-            {current.matches('modulos_admon') && <ModulosAdmon rol={rol} cajoneras={cajoneras} pistoleo={pistoleo} ordenes={ordenes} menu_inventario={menu_inventario} dinero={dinero} whatsapp={whatsapp} handleCancel={handleCancel}/>}
-            {current.matches('datos') && <Datos paymentMethod={paymentMethod} setPaymentMethod={setPaymentMethod} guideNumber={guideNumber} handleCancel={handleCancel} setGuideNumber={setGuideNumber} send={send} />}
-            {current.matches('nequi') && <Nequi consignee={consignee} setModuloSiguiente={setModuloSiguiente} setConsignee={setConsignee} value={value} setValue={setValue} handleFoto={handleFoto} handleDatos={handleDatos} handleCancel={handleCancel} />}
-            {current.matches('efectivo') && <Efectivo consignee={consignee} setPaymentMethod={setPaymentMethod} setConsignee={setConsignee} setModuloSiguiente={setModuloSiguiente} value={value} setValue={setValue} handleFoto={handleFoto} handleDatos={handleDatos} handleCancel={handleCancel} />}
-            {current.matches('devolucion') && <Devolucion consignee={consignee} setConsignee={setConsignee} handleFoto={handleFoto} handleDatos={handleDatos} handleCancel={handleCancel} />}
-            {current.matches('sin_cobro') && <SinCobro setPaymentMethod={setPaymentMethod} consignee={consignee} setModuloSiguiente={setModuloSiguiente} setConsignee={setConsignee} handleFoto={handleFoto} handleDatos={handleDatos} handleCancel={handleCancel} />}
-            {current.matches('otra') && <Otra consignee={consignee} setConsignee={setConsignee} entidad={entidad} setEntidad={setEntidad} value={value} setValue={setValue} handleFoto={handleFoto} handleDatos={handleDatos} handleCancel={handleCancel} />}
-            {current.matches('nequi_efectivo') && <NequiEfectivo setModuloSiguiente={setModuloSiguiente} setPaymentMethod={setPaymentMethod} consignee={consignee} setConsignee={setConsignee} value={value} setValue={setValue} value1={value1} setValue1={setValue1} handleFoto={handleFoto} handleDatos={handleDatos} handleCancel={handleCancel} />}
-            {current.matches('foto') && <FotoModule handleCancel={handleCancel} handleFinalizar={handleFinalizar} />}
-            {current.matches('dinero') && <Dinero username={username} handleVerificado={handleVerificado} handleCancel={handleCancel}/>}
-            {current.matches('menu_inventario') && <MenuInventario handleCancel={handleCancel} onInventarioClick={onInventarioClick} onInventarioTouch={onInventarioTouch} onCrearInventarioClick={onCrearInventarioClick} onCrearInventarioTouch={onCrearInventarioTouch} />}
-            {current.matches('consumo_por_orden') && <ConsumoPorOrden send={send} handleCancel={handleCancel}/>}
-            {current.matches('cajoneras') && <Cajoneras username={username} modulos_admon={modulos_admon}/>}
-            {current.matches('whatsapp') && <WhatsApp handleCancel={handleCancel}/>}
-            {current.matches('verificado') && <Verificado send={send}/>}
-            {current.matches('finalizar') && <Finalizar send={send}/>}
+            {current.matches('modulos') && <Modulos send={send} setRol={setRol} setUsername={setUsername} handleInitial={handleInitial} setCodMen={setCodMen}/>}
+            {current.matches('ingreso') && <Ingreso send={send} handleInitial={handleInitial} cod_men={cod_men} password={password} setUsername={setUsername} setCodMen={setCodMen} setPassword={setPassword} />}     
+            {current.matches('ingreso_admon') && <IngresoAdmon send={send} handleInitial={handleInitial} setUsername={setUsername} setRol={setRol} email={email} setEmail={setEmail} password={password} setPassword={setPassword} />}
+            {current.matches('cambio_contrasena') && <CambioContrasena handleInitial={handleInitial} />} 
+            {current.matches('ordenes') && <Ordenes order={order} id_cliente={id_cliente} handleInitial={handleInitial} setIdCliente={setIdCliente} setOrder={setOrder} handleFileChange={handleFileChange} handleUploadOrders={handleUploadOrdersBase} handleCancel={handleCancel} />}
+            {current.matches('modulos_admon') && <ModulosAdmon rol={rol} handleInitial={handleInitial} cajoneras={cajoneras} pistoleo={pistoleo} ordenes={ordenes} menu_inventario={menu_inventario} dinero={dinero} whatsapp={whatsapp} handleCancel={handleCancel}/>}
+            {current.matches('datos') && <Datos paymentMethod={paymentMethod} handleInitial={handleInitial} setPaymentMethod={setPaymentMethod} guideNumber={guideNumber} handleCancel={handleCancel} setGuideNumber={setGuideNumber} send={send} />}
+            {current.matches('nequi') && <Nequi consignee={consignee} handleInitial={handleInitial} setModuloSiguiente={setModuloSiguiente} setConsignee={setConsignee} value={value} setValue={setValue} handleFoto={handleFoto} handleDatos={handleDatos} handleCancel={handleCancel} />}
+            {current.matches('efectivo') && <Efectivo consignee={consignee} handleInitial={handleInitial} setPaymentMethod={setPaymentMethod} setConsignee={setConsignee} setModuloSiguiente={setModuloSiguiente} value={value} setValue={setValue} handleFoto={handleFoto} handleDatos={handleDatos} handleCancel={handleCancel} />}
+            {current.matches('devolucion') && <Devolucion consignee={consignee} handleInitial={handleInitial} setConsignee={setConsignee} handleFoto={handleFoto} handleDatos={handleDatos} handleCancel={handleCancel} />}
+            {current.matches('sin_cobro') && <SinCobro setPaymentMethod={setPaymentMethod} handleInitial={handleInitial} consignee={consignee} setModuloSiguiente={setModuloSiguiente} setConsignee={setConsignee} handleFoto={handleFoto} handleDatos={handleDatos} handleCancel={handleCancel} />}
+            {current.matches('otra') && <Otra consignee={consignee} handleInitial={handleInitial} setConsignee={setConsignee} entidad={entidad} setEntidad={setEntidad} value={value} setValue={setValue} handleFoto={handleFoto} handleDatos={handleDatos} handleCancel={handleCancel} />}
+            {current.matches('nequi_efectivo') && <NequiEfectivo setModuloSiguiente={setModuloSiguiente} handleInitial={handleInitial} setPaymentMethod={setPaymentMethod} consignee={consignee} setConsignee={setConsignee} value={value} setValue={setValue} value1={value1} setValue1={setValue1} handleFoto={handleFoto} handleDatos={handleDatos} handleCancel={handleCancel} />}
+            {current.matches('foto') && <FotoModule handleCancel={handleCancel} handleInitial={handleInitial} handleFinalizar={handleFinalizar} />}
+            {current.matches('dinero') && <Dinero username={username} handleInitial={handleInitial} handleVerificado={handleVerificado} handleCancel={handleCancel}/>}
+            {current.matches('menu_inventario') && <MenuInventario handleCancel={handleCancel} handleInitial={handleInitial} onInventarioClick={onInventarioClick} onInventarioTouch={onInventarioTouch} onCrearInventarioClick={onCrearInventarioClick} onCrearInventarioTouch={onCrearInventarioTouch} />}
+            {current.matches('consumo_por_orden') && <ConsumoPorOrden send={send} handleInitial={handleInitial} handleCancel={handleCancel}/>}
+            {current.matches('cajoneras') && <Cajoneras username={username} handleInitial={handleInitial} modulos_admon={modulos_admon}/>}
+            {current.matches('whatsapp') && <WhatsApp handleCancel={handleCancel} handleInitial={handleInitial}/>}
+            {current.matches('verificado') && <Verificado send={send} handleInitial={handleInitial}/>}
+            {current.matches('finalizar') && <Finalizar send={send} handleInitial={handleInitial}/>}
             
           </div>
         </div>

@@ -3,13 +3,15 @@ const MenuInventario = ({
   onInventarioTouch, 
   onCrearInventarioClick, 
   onCrearInventarioTouch,
-  handleCancel 
+  handleCancel,
+  handleInitial, 
 }: { 
   onInventarioClick: React.MouseEventHandler<HTMLButtonElement>, 
   onInventarioTouch: React.TouchEventHandler<HTMLButtonElement>, 
   onCrearInventarioClick: React.MouseEventHandler<HTMLButtonElement>, 
   onCrearInventarioTouch: React.TouchEventHandler<HTMLButtonElement>, 
-  handleCancel: () => void
+  handleCancel: () => void,
+  handleInitial: () => void,
 }) => (
   <div className="flex flex-col items-center justify-center gap-4 p-4">
     <button
@@ -34,6 +36,14 @@ const MenuInventario = ({
       onClick={handleCancel}
     >
       Cancelar
+    </button>
+    <button
+                  className="bg-green-400 hover:bg-yellow-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-1/2 transition-colors duration-200"
+                  type="button"
+                  onClick={handleInitial}
+                  onTouchEnd={handleInitial}
+                >
+                  Ir a Inicio
     </button>
   </div>
 );

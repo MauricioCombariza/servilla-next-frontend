@@ -9,7 +9,9 @@ interface OrdenesProps {
     handleFileChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
     handleUploadOrders: () => void;
     handleCancel: () => void;
+    handleInitial: () => void;
 }
+
 
 const Ordenes: React.FC<OrdenesProps> = ({
     order,
@@ -19,7 +21,9 @@ const Ordenes: React.FC<OrdenesProps> = ({
     handleFileChange,
     handleUploadOrders,
     handleCancel,
+    handleInitial,
 }) => {
+    
     return (
         <>
             <h1 className='bg-blue-500 text-2xl text-white text-center py-2 mb-4'>Ingresar las Ordenes</h1>
@@ -37,6 +41,14 @@ const Ordenes: React.FC<OrdenesProps> = ({
                 onClick={handleCancel}
             >
                 Cancelar
+            </button>
+            <button
+                  className="bg-green-400 hover:bg-yellow-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-1/2 transition-colors duration-200"
+                  type="button"
+                  onClick={handleInitial}
+                  onTouchEnd={handleInitial}
+                >
+                  Ir a Inicio
             </button>
         </>
     );

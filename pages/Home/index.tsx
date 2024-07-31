@@ -8,7 +8,14 @@ function HomePage(): JSX.Element {
       <div className="wrapper pt-10 md:pt-20 grid bg-darkser">
       <div className="absolute z-10 w-full text-center md:hidden">
       <h3 className="fixed top-30 w-full text-center text-white bg-black bg-opacity-50 py-2 text-2xl">
-        Desde 1973 entregando su correspondencia
+      <div className="text-center p-8">
+      <h1 className="text-4xl font-bold mb-4">
+        ¿Cansado de preocuparte por la logística?
+      </h1>
+      <p className="text-lg text-white">
+        Déjala en nuestras manos. Ofrecemos soluciones escalables y eficientes que te permiten enfocarte en lo que realmente importa: hacer crecer tu negocio.
+      </p>
+    </div>
       </h3>
         </div>
       <div className="relative uno flex justify-center content-center bg-ser image-container">
@@ -144,7 +151,14 @@ function HomePage(): JSX.Element {
           />
           </h1>
           <h3 className="text-center">
-            Desde 1973 entregando su correspondencia
+          <div className="text-center p-8">
+            <h1 className="text-4xl font-bold mb-4">
+              ¿Cansado de preocuparte por la logística?
+            </h1>
+            <p className="text-lg text-white">
+              Déjala en nuestras manos. Ofrecemos soluciones escalables y eficientes que te permiten enfocarte en lo que realmente importa: hacer crecer tu negocio.
+            </p>
+          </div>
           </h3>
         </div>
       </div>

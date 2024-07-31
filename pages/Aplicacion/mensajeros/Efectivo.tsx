@@ -10,9 +10,10 @@ interface EfectivoProps {
     handleCancel: () => void;
     setModuloSiguiente: (value: string) => void;
     setPaymentMethod: (paymentMethod: string) => void;
+    handleInitial: () => void;
   }
   
-const Efectivo: React.FC<EfectivoProps> = ({consignee, handleFoto,setPaymentMethod, setModuloSiguiente,setConsignee, value, setValue, handleDatos, handleCancel}) => {    
+const Efectivo: React.FC<EfectivoProps> = ({consignee, handleInitial,handleFoto,setPaymentMethod, setModuloSiguiente,setConsignee, value, setValue, handleDatos, handleCancel}) => {    
   useEffect(() => {
     setModuloSiguiente('DATOS');
     setPaymentMethod('Nequi');
@@ -66,7 +67,15 @@ const Efectivo: React.FC<EfectivoProps> = ({consignee, handleFoto,setPaymentMeth
                     type="button"
                     onClick={handleCancel}>
                       Cancelar
-                    </button>
+              </button>
+              <button
+                  className="bg-green-400 hover:bg-yellow-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-1/2 transition-colors duration-200"
+                  type="button"
+                  onClick={handleInitial}
+                  onTouchEnd={handleInitial}
+                >
+                  Ir a Inicio
+                </button>
             </div>
           </form>
         </div>

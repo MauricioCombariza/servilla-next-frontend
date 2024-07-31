@@ -3,7 +3,7 @@ import { ButtonModulosAdmin } from '../../../utils/funciones/funciones_admon';
 
 
 
-const ModulosAdmon = ({rol, cajoneras, pistoleo, ordenes, menu_inventario, dinero, whatsapp, handleCancel}: {rol: number, whatsapp: () => void ,cajoneras: () => void, pistoleo: () => void, ordenes: () => void, menu_inventario: () => void, dinero: () => void, handleCancel: () => void}) => {
+const ModulosAdmon = ({rol, cajoneras, pistoleo, ordenes, menu_inventario, dinero, whatsapp, handleCancel, handleInitial}: {rol: number, whatsapp: () => void ,cajoneras: () => void, pistoleo: () => void, ordenes: () => void, menu_inventario: () => void, dinero: () => void, handleInitial: () => void, handleCancel: () => void}) => {
 
 
   return (
@@ -16,6 +16,14 @@ const ModulosAdmon = ({rol, cajoneras, pistoleo, ordenes, menu_inventario, diner
         <ButtonModulosAdmin rol={rol} minRol={4} onClick={menu_inventario} hoverColor="bg-red-500">Inventario</ButtonModulosAdmin>
         <ButtonModulosAdmin rol={rol} minRol={5} onClick={dinero} hoverColor="bg-yellow-300">Dinero</ButtonModulosAdmin>
         <ButtonModulosAdmin rol={rol} minRol={3} onClick={whatsapp} hoverColor="bg-blue-700">WhatsApp</ButtonModulosAdmin>
+        <button
+                  className="bg-green-400 hover:bg-yellow-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-1/2 transition-colors duration-200"
+                  type="button"
+                  onClick={handleInitial}
+                  onTouchEnd={handleInitial}
+                >
+                  Ir a Inicio
+                </button>
       </div>
     </div>
   );

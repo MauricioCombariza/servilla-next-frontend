@@ -1,5 +1,6 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import { API_SER } from '@/pages/api';
+import { supabase } from '@/supabase';
 
 interface EmailInputProps {
   email: string;
@@ -71,13 +72,13 @@ export const PasswordInput = ({ password, setPassword }: PasswordInputProps) => 
 export const ButtonsIngresoAdmin = ({
   onAdminLoginClick,
   onAdminLoginTouch,
-  onAdminClick,
-  onAdminTouch
+  // onAdminClick,
+  // onAdminTouch
 }: {
   onAdminLoginClick: React.MouseEventHandler<HTMLButtonElement>,
   onAdminLoginTouch: React.TouchEventHandler<HTMLButtonElement>,
-  onAdminClick: React.MouseEventHandler<HTMLButtonElement>,
-  onAdminTouch: React.TouchEventHandler<HTMLButtonElement>
+  // onAdminClick: React.MouseEventHandler<HTMLButtonElement>,
+  // onAdminTouch: React.TouchEventHandler<HTMLButtonElement>
 }) => (
   <div className="flex items-center justify-between space-x-4 w-full">
     <button
@@ -91,8 +92,8 @@ export const ButtonsIngresoAdmin = ({
     <button
       className="bg-green-400 hover:bg-yellow-500 text-white font-bold py-2 px-4 rounded focus:outline-none shadow-lg transform hover:-translate-y-1 transition-all duration-200 ease-in-out w-full h-12"
       type="button"
-      onClick={onAdminClick}
-      onTouchEnd={onAdminTouch}
+      // onClick={onAdminClick}
+      // onTouchEnd={onAdminTouch}
     >
       Cambio de contraseña
     </button>
@@ -148,3 +149,57 @@ export const validateCredentialsMensajeros = async (cod_men: number, password: s
 
   return { isValid: data.isValid, username: data.username};
 };
+
+export const fetchUserRole = async (id_user:string) => {
+  if (!id_user) {
+    console.error('No user ID provided');
+    return;
+  }
+
+  const { data, error } = await supabase
+    .from('usuarios') // Asume que tu tabla se llama 'usuarios'
+    .select('rol') // Asume que la columna que contiene el rol se llama 'rol'
+    .eq('id_uuid', id_user) // Asume que la columna que quieres comparar se llama 'id_uuid'
+    .single(); // Utiliza .single() si esperas un único resultado
+
+  if (error) {
+    console.error('Error fetching user role:', error);
+    return;
+  }
+
+  if (data) {
+    console.log('User role:', data.rol);
+    return data.rol;
+  } else {
+    console.log('User not found');
+    return null;
+  }
+};
+
+export const fetchUserCodMen = async (id_user:string) => {
+  if (!id_user) {
+    console.error('No user ID provided');
+    return;
+  }
+
+  const { data, error } = await supabase
+    .from('usuarios') // Asume que tu tabla se llama 'usuarios'
+    .select('cod_men') // Asume que la columna que contiene el rol se llama 'rol'
+    .eq('id_uuid', id_user) // Asume que la columna que quieres comparar se llama 'id_uuid'
+    .single(); // Utiliza .single() si esperas un único resultado
+
+  if (error) {
+    console.error('Error fetching user role:', error);
+    return;
+  }
+
+  if (data) {
+    console.log('User cod_men:', data.cod_men);
+    return data.cod_men;
+  } else {
+    console.log('User not found');
+    return null;
+  }
+};
+
+

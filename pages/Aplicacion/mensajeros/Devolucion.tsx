@@ -4,9 +4,10 @@ interface DevolucionProps {
     handleFoto: (method: 'devolucion', value: number) => void;
     handleDatos: () => void;
     handleCancel: () => void;
+    handleInitial: () => void;
   }
   
-const Devolucion: React.FC<DevolucionProps> = ({consignee, setConsignee, handleFoto, handleDatos, handleCancel}) => {
+const Devolucion: React.FC<DevolucionProps> = ({consignee, handleInitial,setConsignee, handleFoto, handleDatos, handleCancel}) => {
   const handleFotoWrapper = () => {
     handleFoto('devolucion', 0); 
   };    
@@ -45,7 +46,15 @@ const Devolucion: React.FC<DevolucionProps> = ({consignee, setConsignee, handleF
                     type="button"
                     onClick={handleCancel}>
                       CANCELAR
-                    </button>
+              </button>
+              <button
+                  className="bg-green-400 hover:bg-yellow-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-1/2 transition-colors duration-200"
+                  type="button"
+                  onClick={handleInitial}
+                  onTouchEnd={handleInitial}
+                >
+                  Ir a Inicio
+                </button>
             </div>
           </form>
         </div>

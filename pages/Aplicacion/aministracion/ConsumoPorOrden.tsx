@@ -2,6 +2,7 @@
 // y se muestre en una tabla
 //
 import React, { useState } from "react";
+import { supabase } from "@/supabase";
 import { API_SER } from "@/pages/api";
 
 type ConsumoItem = {
@@ -12,7 +13,7 @@ type ConsumoItem = {
   
 
 
-const ConsumoPorOrden = ({handleCancel, send}: {handleCancel: () => void, send: (action: { type: string }) => void,}) => {
+const ConsumoPorOrden = ({handleCancel, send, handleInitial}: {handleCancel: () => void, handleInitial: () => void, send: (action: { type: string }) => void,}) => {
   const [orden, setOrden] = useState("");
   const [consumo, setConsumo] = useState<ConsumoItem[]>([]);
   const [error, setError] = useState("");
@@ -24,18 +25,25 @@ const ConsumoPorOrden = ({handleCancel, send}: {handleCancel: () => void, send: 
 
   const handleDeleteOrder = async () => {
     try {
-      const response = await fetch(`${API_SER}/orden/${orden}`, {
-        method: 'DELETE', // Asumiendo que la API requiere un método DELETE para eliminar la orden
-      });
-      if (!response.ok) {
+      const response = await supabase
+      .from('orders')
+      .delete()
+      .eq('orden', orden);
+      
+      if (response) {
+        const response = await supabase
+        .from('suborders')
+        .delete()
+        .eq('orden', orden)
+        if (!response) {
+          throw new Error('Error al eliminar la suborden');
+        }
+      }
+      if (!response) {
         throw new Error('Error al eliminar la orden');
       }
       // Procesar la respuesta si es necesario
       console.log('Orden eliminada con éxito');
-      // Enviar a VERIFICADO después de eliminar la orden
-      // Aquí asumo que "enviar a VERIFICADO" implica alguna otra operación o navegación en tu aplicación
-      // Por ejemplo, podría ser una redirección o simplemente un mensaje de confirmación
-      // A continuación, un ejemplo de cómo podrías enviar un mensaje o realizar alguna acción
       alert('Orden eliminada. Estado: VERIFICADO');
       send({ type: 'VERIFICADO' })
     } catch (error) {
@@ -122,6 +130,14 @@ const ConsumoPorOrden = ({handleCancel, send}: {handleCancel: () => void, send: 
         >
           Menú
         </button>
+        <button
+                  className="bg-green-400 hover:bg-yellow-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-1/2 transition-colors duration-200"
+                  type="button"
+                  onClick={handleInitial}
+                  onTouchEnd={handleInitial}
+                >
+                  Ir a Inicio
+                </button>
       </div>
     </div>
   );

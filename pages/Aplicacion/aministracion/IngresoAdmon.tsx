@@ -1,9 +1,11 @@
+import { supabase } from '@/supabase';
 import React from 'react';
 import {
   EmailInput,
   PasswordInput,
   ButtonsIngresoAdmin,
-  validateCredentials
+  fetchUserRole,
+//   validateCredentials
 } from '../../../utils/funciones/funciones_admon';
 
 const IngresoAdmon = ({
@@ -13,7 +15,8 @@ const IngresoAdmon = ({
   setUsername,
   setEmail,
   password,
-  setPassword
+  setPassword,
+  handleInitial,
 }: {
   send: (action: { type: string; rol?: number }) => void,
   setRol: React.Dispatch<React.SetStateAction<number>>,
@@ -22,30 +25,37 @@ const IngresoAdmon = ({
   setEmail: React.Dispatch<React.SetStateAction<string>>,
   password: string,
   setPassword: React.Dispatch<React.SetStateAction<string>>
+  handleInitial: () => void;
 }) => {
   const administracionLogin = async () => {
     console.log('Ingreso_Admon');
-    
-    const { rol, username } = await validateCredentials(email, password);
-    setRol(rol);
-    setUsername(username);
-    if (rol === 0) {
-      return alert('Credenciales inválidas');
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: email,
+      password: password,
+    });
+    const { data: { user } } = await supabase.auth.getUser()
+    console.log('data:', data);
+    console.log('Session', data?.session);
+    console.log('id',data?.user?.id);
+    const id_user = data?.user?.id; // Suponiendo que esta es la forma en que obtienes el id_user
+    if (id_user) {
+      fetchUserRole(id_user)
+        .then((rol) => {
+          if (rol) {
+            // Aquí puedes manejar el rol del usuario como necesites
+            console.log(`El rol del usuario es: ${rol}`);
+            setRol(rol);
+            if (rol === 0) {
+              alert('Credenciales inválidas');
+            } else {
+              send({ type: 'START', rol });
+            }
+          }
+        })
+        .catch((error) => {
+          console.error('Error al obtener el rol del usuario:', error);
+        });
     }
-    send({ type: 'START', rol });
-  };
-
-  const administracionContrasena = async () => {
-    console.log('Administracion_contrasena');
-    
-    const { rol, username } = await validateCredentials(email, password);
-    setRol(rol);
-    setUsername(username);
-    if (rol === 0) {
-      alert('Credenciales inválidas');
-      return;
-    }
-    send({ type: 'CAMBIOCONTRASENA', rol });
   };
 
   return (
@@ -56,13 +66,18 @@ const IngresoAdmon = ({
         <ButtonsIngresoAdmin
           onAdminLoginClick={administracionLogin}
           onAdminLoginTouch={administracionLogin}
-          onAdminClick={administracionContrasena}
-          onAdminTouch={administracionContrasena}
         />
       </form>
+      <button
+                  className="bg-green-400 hover:bg-yellow-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-1/2 transition-colors duration-200"
+                  type="button"
+                  onClick={handleInitial}
+                  onTouchEnd={handleInitial}
+                >
+                  Ir a Inicio
+                </button>
     </div>
   );
 }
-
 export default IngresoAdmon;
 

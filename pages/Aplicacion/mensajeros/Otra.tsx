@@ -10,9 +10,10 @@ interface OtraProps {
     handleFoto: (method: 'otro', value: number) => void;
     handleDatos: () => void;
     handleCancel: () => void;
+    handleInitial: () => void;
   }
 
-const Otra: React.FC<OtraProps> = ({entidad, setEntidad, consignee, setConsignee, value, setValue, handleFoto, handleDatos, handleCancel}) => {
+const Otra: React.FC<OtraProps> = ({entidad, setEntidad, handleInitial,consignee, setConsignee, value, setValue, handleFoto, handleDatos, handleCancel}) => {
   const onHandleFotoClick = () => {
     handleFoto('otro', value); // Asumiendo que el método es 'otro'
 };  
@@ -74,7 +75,15 @@ const Otra: React.FC<OtraProps> = ({entidad, setEntidad, consignee, setConsignee
                     type="button"
                     onClick={handleCancel}>
                       CANCELAR
-                    </button>
+              </button>
+              <button
+                  className="bg-green-400 hover:bg-yellow-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-1/2 transition-colors duration-200"
+                  type="button"
+                  onClick={handleInitial}
+                  onTouchEnd={handleInitial}
+                >
+                  Ir a Inicio
+                </button>
             </div>
           </form>
         </div>

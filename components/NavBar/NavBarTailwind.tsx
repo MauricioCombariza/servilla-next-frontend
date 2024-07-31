@@ -37,6 +37,7 @@ const NavBar = () => {
     setOpenServ(!openServ);
     console.log('handleClickServe')
   };
+    
 
 return (
 <>

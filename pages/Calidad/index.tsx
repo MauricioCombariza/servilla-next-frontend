@@ -18,12 +18,11 @@ const Calidad = () => {
       <Typography variant='h4' align='center' sx={{p:1}}> Calidad </Typography>
 
       <Typography color="text.primary" sx={{px:5, textAlign: 'justify'}}>
-        En Servilla S.A.S, compañía dedicada a la mensajería expresa del sector
-        público, privado y mixto, con cubrimiento urbano y nacional, nos
-        comprometemos a la satisfacción de las expectativas de nuestros clientes
-        a través del cumplimiento de sus necesidades. Nos orientamos hacia el
-        mejoramiento continuo de los procesos y el progreso integral de nuestro
-        personal, para el logro de la calidad en el servicio.
+      En Servilla SAS, somos apasionados por empoderar a los emprendedores y generar un impacto positivo en nuestras comunidades.
+      A través de soluciones logísticas personalizadas y eficientes,
+      nos comprometemos a superar las expectativas de nuestros clientes, fomentando su crecimiento y desarrollo.
+      Nuestra cultura se basa en la innovación continua y la mejora constante de nuestros procesos,
+      asegurando siempre un servicio de alta calidad.
       </Typography>
       
     </Card>

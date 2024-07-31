@@ -18,16 +18,10 @@ const Mision = () => {
       <Typography variant='h4' align='center' sx={{p:1}}> Misión </Typography>
 
       <Typography color="text.primary" sx={{px:5, textAlign: 'justify'}}>
-        Somos una compañía dedicada a la mensajería expresa del sector público,
-        privado y mixto, con cubrimiento urbano y nacional. Servilla S.A.S
-        analiza el mercado para enfrentar los cambios migrando hacia una era
-        digital y tecnificada. Las fortalezas de nuestra organización se
-        fundamentan en: El personal competente en sistemas informáticos,
-        operativos y de distribución. La experiencia, cobertura y mejoramiento
-        continuo de los procesos a través de la implementación de herramientas
-        tecnológicas, calidad y rapidez de entrega. Proyectamos hacia nuestros
-        clientes la responsabilidad y el compromiso en la entrega de la
-        correspondencia.
+      Servilla SAS es una empresa de logística especializada en empoderar
+      a emprendedores, pequeñas y mediana empresas a través de soluciones personalizadas y eficientes.
+      Nos comprometemos a ser un socio estratégico, facilitando el crecimiento de nuestros clientes
+      y generando un impacto positivo en nuestras comunidades.
       </Typography>
       
     </Card>

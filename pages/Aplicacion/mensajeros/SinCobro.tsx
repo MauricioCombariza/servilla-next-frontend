@@ -8,6 +8,7 @@ interface SinCobroProps {
     handleCancel: () => void;
     setModuloSiguiente: (value: string) => void;
     setPaymentMethod: (paymentMethod: string) => void;
+    handleInitial: () => void;
   }
 
 const SinCobro: React.FC<SinCobroProps> = (
@@ -18,7 +19,8 @@ const SinCobro: React.FC<SinCobroProps> = (
     handleFoto,
     handleDatos,
     handleCancel,
-    setPaymentMethod
+    setPaymentMethod,
+    handleInitial
   }
 ) => {
   useEffect(() => {
@@ -63,7 +65,15 @@ const SinCobro: React.FC<SinCobroProps> = (
                     type="button"
                     onClick={handleCancel}>
                       CANCELAR
-                    </button>
+              </button>
+              <button
+                  className="bg-green-400 hover:bg-yellow-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-1/2 transition-colors duration-200"
+                  type="button"
+                  onClick={handleInitial}
+                  onTouchEnd={handleInitial}
+                >
+                  Ir a Inicio
+                </button>
             </div>
           </form>
         </div>

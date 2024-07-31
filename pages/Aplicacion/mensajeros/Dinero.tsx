@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { API_SER } from '@/pages/api';
+import { supabase } from '@/supabase';
 
 interface DineroData {
   serial: number;
@@ -14,11 +14,10 @@ interface DineroProps {
   username: string;
   handleCancel: () => void;
   handleVerificado: () => void;
+  handleInitial: () => void;
 }
 
-
-
-const Dinero: React.FC<DineroProps> = ({ username, handleVerificado,  handleCancel }) => {
+const Dinero: React.FC<DineroProps> = ({ username, handleVerificado, handleCancel, handleInitial }) => {
   const [datos, setDatos] = useState<DineroData[]>([]);
   const [cambios, setCambios] = useState<DineroData[]>([]);
   const [cargando, setCargando] = useState<boolean>(false);
@@ -29,6 +28,7 @@ const Dinero: React.FC<DineroProps> = ({ username, handleVerificado,  handleCanc
   useEffect(() => {
     const datosIniciales: DineroData[] = [];
     setDatos(datosIniciales);
+    console.log('Username:', username);
   }, []);
 
   useEffect(() => {
@@ -50,8 +50,8 @@ const Dinero: React.FC<DineroProps> = ({ username, handleVerificado,  handleCanc
   const manejarClick = async () => {
     await enviarVerificacion();
     handleVerificado();
-};
-  
+  };
+
   const handleNumeroNequiChange = (serial: number, nuevoNumeroNequi: string) => {
     setDatos(datos.map(dato => {
       if (dato.serial === serial) {
@@ -60,6 +60,7 @@ const Dinero: React.FC<DineroProps> = ({ username, handleVerificado,  handleCanc
       return dato;
     }));
   };
+
   const handleVerificadoChange = (serial: number, verificado: boolean) => {
     setDatos(datos.map(dato => {
       if (dato.serial === serial) {
@@ -71,16 +72,32 @@ const Dinero: React.FC<DineroProps> = ({ username, handleVerificado,  handleCanc
     }));
   };
 
-  
   const verificarDinero = async (metodo: 'nequi' | 'efectivo') => {
     setCargando(true);
     setMostrarTitulares(true);
     setMetodoVerificacion(metodo);
     try {
-      const respuesta = await fetch(`${API_SER}/verificar-dinero/?tipo_de_pago=${metodo}`);
-      const datos = await respuesta.json();
-      setDatos(datos);
-      console.log('Datos', datos);
+      const { data, error } = await supabase
+        .from('estado_dinero')
+        .select('cod_men, consignatario, valor_consignacion, serial')
+        .match({ estado: 'e', tipo_de_pago: metodo });
+
+      if (error) {
+        throw error;
+      }
+
+      if (data) {
+        const transformedData: DineroData[] = data.map((item: any) => ({
+          ...item,
+          verificado: false, // o el valor por defecto que necesites
+          numero_nequi: '' // o el valor por defecto que necesites
+        }));
+        setDatos(transformedData);
+      } else {
+        setDatos([]);
+      }
+
+      console.log('Datos', data);
     } catch (error) {
       console.error('Error al obtener los datos:', error);
     } finally {
@@ -100,9 +117,7 @@ const Dinero: React.FC<DineroProps> = ({ username, handleVerificado,  handleCanc
   };
 
   const guardarCambios = async () => {
-    // Aquí implementarías la lógica para guardar los cambios, por ejemplo, enviando los datos a un servidor
     console.log('Guardando cambios:', cambios);
-    // Resetear el estado de cambios después de guardar
     setCambios([]);
   };
 
@@ -110,36 +125,27 @@ const Dinero: React.FC<DineroProps> = ({ username, handleVerificado,  handleCanc
     const datosVerificados = datos.filter(dato => dato.verificado);
 
     for (const dato of datosVerificados) {
-      const url = `${API_SER}/actualizar-estado-dinero/${dato.serial}?tipo_de_pago=${metodoVerificacion}&verificacion=${dato.verificado}&verificado_por=${username}&numero_nequi=${dato.numero_nequi}`;
-      try {
-        const response = await fetch(url, {
-          method: 'PUT', // Ajusta el método según la API
-          headers: {
-            'Content-Type': 'application/json',
-            // Agrega cualquier otro header necesario para tu API
-          },
+      const { error } = await supabase
+        .from('estado_dinero')
+        .update({
+          'verificacion_pago': true,
+          'estado': 'E',
+          'verificado_por': username,
+          'numero_consignacion': dato.numero_nequi
+        })
+        .match({
+          serial: dato.serial,
+          tipo_de_pago: metodoVerificacion,
         });
 
-        if (!response.ok) {
-          throw new Error('Error en la solicitud');
-        }
-
-        // Opcional: procesar la respuesta si es necesario
-        // const data = await response.json();
-      } catch (error) {
+      if (error) {
         console.error('Error al enviar la verificación:', error);
-        // Manejar el error, por ejemplo, mostrando un mensaje al usuario
-        return; // Detiene la ejecución en caso de error
+        return;
       }
     }
     alert('La verificación del dinero se ha subido de forma exitosa.');
+  };
 
-  }
-
-
-  
-  
-  
   return (
     <div className="p-4">
       <div className="flex flex-col space-y-2 sm:space-y-0 sm:flex-row sm:space-x-2">
@@ -168,70 +174,75 @@ const Dinero: React.FC<DineroProps> = ({ username, handleVerificado,  handleCanc
           <div className="overflow-x-auto mt-4">
             {mostrarTitulares && (
               <>
-              <div className="text-center font-bold mb-4">Total Verificado: {totalVerificado}</div>
-              <table className="table-auto w-full">
-                <thead>
-                  <tr>
-                    <th className="px-4 py-2">Serial</th>
-                    <th className="px-4 py-2">Cod_Men</th>
-                    <th className="px-4 py-2">Nombre</th>
-                    <th className="px-4 py-2">Monto</th>
-                    <th className="px-4 py-2">Verificado</th>
-                    <th className="px-4 py-2">Número de Consignación</th>
-                  </tr>
-                </thead>
-                <tbody>
-                {datos.map((dato) => (
-                    <tr key={dato.serial}>
-                    <td className="border px-4 py-2">{dato.serial}</td>
-                    <td className="border px-4 py-2">{dato.cod_men}</td>
-                    <td className="border px-4 py-2">{dato.consignatario}</td>
-                    <td className="border px-4 py-2">{dato.valor_consignacion}</td>
-                    <td className="border px-4 py-2">
-                      <input
-                        type="checkbox"
-                        checked={dato.verificado}
-                        onChange={(e) => handleVerificadoChange(dato.serial, e.target.checked)}
-                      />
-                    </td>
-                    <td className="border px-4 py-2">
-                      <input
-                        type="text"
-                        value={dato.numero_nequi}
-                        onChange={(e) => handleNumeroNequiChange(dato.serial, e.target.value)}
-                        className="w-full"
-                      />
-                    </td>
+                <div className="text-center font-bold mb-4">Total Verificado: {totalVerificado}</div>
+                <table className="table-auto w-full">
+                  <thead>
+                    <tr>
+                      <th className="px-4 py-2">Serial</th>
+                      <th className="px-4 py-2">Cod_Men</th>
+                      <th className="px-4 py-2">Nombre</th>
+                      <th className="px-4 py-2">Monto</th>
+                      <th className="px-4 py-2">Verificado</th>
+                      <th className="px-4 py-2">Número de Consignación</th>
                     </tr>
-                ))}
-                </tbody>
-                <div className="text-center mt-4">
-              <button
-                className="bg-green-400 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded"
-                onClick={guardarCambios}
-              >
-                Guardar Cambios
-              </button>
-          </div>
-              </table>
+                  </thead>
+                  <tbody>
+                    {datos.map((dato) => (
+                      <tr key={dato.serial}>
+                        <td className="border px-4 py-2">{dato.serial}</td>
+                        <td className="border px-4 py-2">{dato.cod_men}</td>
+                        <td className="border px-4 py-2">{dato.consignatario}</td>
+                        <td className="border px-4 py-2">{dato.valor_consignacion}</td>
+                        <td className="border px-4 py-2">
+                          <input
+                            type="checkbox"
+                            checked={dato.verificado}
+                            onChange={(e) => handleVerificadoChange(dato.serial, e.target.checked)}
+                          />
+                        </td>
+                        <td className="border px-4 py-2">
+                          <input
+                            type="text"
+                            value={dato.numero_nequi}
+                            onChange={(e) => handleNumeroNequiChange(dato.serial, e.target.value)}
+                            className="w-full"
+                          />
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                  <div className="text-center mt-4">
+                    <button
+                      className="bg-green-400 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded"
+                      onClick={guardarCambios}
+                    >
+                      Guardar Cambios
+                    </button>
+                  </div>
+                </table>
               </>
-              
             )}
           </div>
-          
           {metodoVerificacion && (
             <div className="text-center mt-4">
               <button
                 className="bg-green-400 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded"
                 onClick={manejarClick}
-                 >
+              >
                 Verificado
               </button>
             </div>
           )}
+          <button
+            className="bg-green-400 hover:bg-yellow-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-1/2 transition-colors duration-200"
+            type="button"
+            onClick={handleInitial}
+            onTouchEnd={handleInitial}
+          >
+            Ir a Inicio
+          </button>
         </>
       )}
-      
     </div>
   );
 };

@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react';
 
 type FinalizarProps = {
-  send: (action: {type: string}) => void
+  send: (action: {type: string}) => void,
+  handleInitial: () => void
 };
 
-const Finalizar: React.FC<FinalizarProps> = ({ send }) => {
+const Finalizar: React.FC<FinalizarProps> = ({ send, handleInitial }) => {
   useEffect(() => {
     // Establece un temporizador para enviar el evento después de 2 segundos
     const timer = setTimeout(() => {
@@ -18,7 +19,14 @@ const Finalizar: React.FC<FinalizarProps> = ({ send }) => {
   return(
     <div className="w-full max-w-md mx-auto">
       <h1 className='bg-green-300 text-2xl text-white text-center py-2 mb-4 mx-2'>Entrega realizada</h1>
-    
+      <button
+                  className="bg-green-400 hover:bg-yellow-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-1/2 transition-colors duration-200"
+                  type="button"
+                  onClick={handleInitial}
+                  onTouchEnd={handleInitial}
+                >
+                  Ir a Inicio
+                </button>
     </div>
 );
 };

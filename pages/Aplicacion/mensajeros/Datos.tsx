@@ -1,5 +1,6 @@
 import React, { ChangeEvent, FC, MouseEvent } from 'react';
 import { API_SER } from '@/pages/api';
+import { buscarSerial } from '@/utils/funciones/funciones_manejo_tablas';
 
 interface DatosProps {
   setGuideNumber: (guideNumber: string) => void;
@@ -8,9 +9,10 @@ interface DatosProps {
   paymentMethod: string;
   setPaymentMethod: (paymentMethod: string) => void;
   send: (action: { type: string }) => void;
+  handleInitial: () => void;
 }
 
-const Datos: FC<DatosProps> = ({paymentMethod,setPaymentMethod, send, guideNumber,handleCancel, setGuideNumber}) => {
+const Datos: FC<DatosProps> = ({paymentMethod,setPaymentMethod, send, guideNumber,handleCancel,handleInitial,setGuideNumber}) => {
   
   const handlePaymentMethodChange = (event: ChangeEvent<HTMLSelectElement>) => {
     setPaymentMethod(event.target.value);
@@ -22,20 +24,15 @@ const Datos: FC<DatosProps> = ({paymentMethod,setPaymentMethod, send, guideNumbe
     event.preventDefault();
     try {
       // Primera llamada a fetch para encontrar el serial
-      const response = await fetch(`${API_SER}/find_serial/${guideNumber}`);
-      const data = await response.json(); // Espera y luego convierte la respuesta a JSON
-  
-      if (!data.ok) {
+      const response = await buscarSerial(guideNumber, 'orders');
+      
+      if (!response) {
         alert('El serial no existe');
-        throw new Error(`HTTP error! status: ${response.status}`); // Usa response.status para obtener el código de estado HTTP
+        throw new Error(`HTTP error! status: ${response}`); // Usa response.status para obtener el código de estado HTTP
       } else {
-        // Segunda llamada a fetch para verificar si el serial existe en la tabla money
-        const moneyResponse = await fetch(`${API_SER}/check-serial-money/${guideNumber}`);
-        const moneyData = await moneyResponse.json(); // Espera y luego convierte la respuesta a JSON
-        console.log('moneyData:', moneyData);
-        if (moneyData) {
+        const moneyResponse = await buscarSerial(guideNumber, 'estado_dinero');
+        if (moneyResponse) {
           return alert('El serial ya fue ingresado como cancelado');
-          // Aquí puedes manejar la lógica para cuando el serial ya existe en la tabla money
         } else {
           // Lógica para cuando el serial no existe en la tabla money
         }
@@ -108,6 +105,14 @@ const Datos: FC<DatosProps> = ({paymentMethod,setPaymentMethod, send, guideNumbe
                       Cancelar
                     </button>
                   </div>
+                  <button
+                  className="bg-green-400 hover:bg-yellow-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-1/2 transition-colors duration-200"
+                  type="button"
+                  onClick={handleInitial}
+                  onTouchEnd={handleInitial}
+                >
+                  Ir a Inicio
+                </button>
                 </form>
               </div>
 

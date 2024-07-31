@@ -4,16 +4,16 @@ import { ButtonSer, ButtonType } from "../../components/ButtonSer";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { usePostSignup, SignupType } from "../../Hooks/usePostSignup";
 import { useAuth, AuthContextProps } from "../../Auth";
+import { supabase } from "../../supabase"
 
-interface FormData {
-  auth: AuthContextProps
-  email: string | null;
-  username: string | null;
-  company: string | null;
-  password: string | null;
-  confirmPassword: string | null;
-  API: string;
-}
+interface IFormData {
+    username: string | null;
+    company: number | 0;
+    email: string | '';
+    password: string | '';
+    address: string | null;
+    celular: string | null;
+  }
 
 function Registrarse () {
     const auth = useAuth()
@@ -27,27 +27,53 @@ function Registrarse () {
         setIsLoading(false); // Marca como no cargando al completar la solicitud
       };
 
-    const signup = (event: React.FormEvent<HTMLFormElement>) => {
+      async function signup(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
-        const preAPI = process.env.API
-        const postAPI = 'user/signup'
-        const API = `${preAPI}/${postAPI}`
-
-        if (form.current) {
-          const formData = new FormData(form.current)
-          const data: FormData = {
-            auth: auth,
-            email: formData.get('email')?.toString() || null,
-            username: formData.get('username')?.toString() || null,
-            company: formData.get('company')?.toString() || null,
-            password: formData.get('password')?.toString() || null,
-            confirmPassword: formData.get('confirmPassword')?.toString() || null,
-            API: API
+        const form = new FormData(event.currentTarget);
+        const formDataValues: IFormData = {
+            username: form.get('username')?.toString() || '',
+            company: Number(form.get('company')) || 0,
+            address: form.get('address')?.toString() || '',
+            email: form.get('email')?.toString() || '',
+            password: form.get('password')?.toString() || '',
+            celular: form.get('celular')?.toString() || '',
+        };
+    
+        if (formDataValues.email === '') {
+            alert('Email es requerido');
+            return;
         }
-        OnFormSubmit(data) 
+        if (formDataValues.password === '') {
+            alert('Password es requerido');
+            return;
+        }
+    
+        const { data, error: signUpError } = await supabase.auth.signUp({
+            email: formDataValues.email,
+            password: formDataValues.password,
+        });
+    
+        if (signUpError) {
+            alert(signUpError.message);
+            return;
+        }
+    
+        const { error: insertError } = await supabase
+            .from('usuarios')
+            .insert([{
+                nombre: formDataValues.username,
+                email: formDataValues.email, // Asumiendo que el email es único y puede ser usado como referencia
+                id_bodega: formDataValues.company, // Asumiendo que 'company' se refiere a 'id_bodega'
+                direccion: formDataValues.address,
+                telefono: formDataValues.celular,
+            }]);
+    
+        if (insertError) {
+            alert(insertError.message);
+        } else {
+            alert('La información se ha creado correctamente');
         }
     }
-
     return (
         <Container maxWidth='md'>
             <form
@@ -67,6 +93,15 @@ function Registrarse () {
             />
             </div>
             <div className="py-2 px-2">
+            <div>Password</div>
+            <input
+                name="password"
+                className="w-full leading-snug text-gray-800 placeholder-blue-400 py-1 px-4 bg-green-600 rounded border border-darkser hover:bg-ser focus:outline-none focus:shadow-outline hover:text-white"
+                type="password"
+                placeholder="password"
+            />
+            </div>
+            <div className="py-2 px-2">
             <div>Username</div>
             <input
                 name="username"
@@ -76,30 +111,21 @@ function Registrarse () {
             />
             </div>
             <div className="py-2 px-2">
-            <div>Compañia</div>
+            <div>Direccion</div>
             <input
-                name="company"
+                name="address"
                 className="w-full leading-snug text-gray-800 placeholder-blue-400 py-1 px-4 bg-green-600 rounded border border-darkser hover:bg-ser focus:outline-none focus:shadow-outline hover:text-white"
-                type="company"
-                placeholder="Compañía"
+                type="address"
+                placeholder="Direccion"
             />
             </div>
             <div className="py-2 px-2">
-            <div>Clave</div>
+            <div>Célular</div>
             <input
-                name="password"
+                name="celular"
                 className="w-full leading-snug text-gray-800 placeholder-blue-400 py-1 px-4 bg-green-600 rounded border border-darkser hover:bg-ser focus:outline-none focus:shadow-outline hover:text-white"
-                type="password"
-                placeholder="Password"
-            />
-            </div>
-            <div className="py-2 px-2">
-            <div>Confirmar clave</div>
-            <input
-                name="confirmPassword"
-                className="w-full leading-snug text-gray-800 placeholder-blue-400 py-1 px-4 bg-green-600 rounded border border-darkser hover:bg-ser focus:outline-none focus:shadow-outline hover:text-white"
-                type="password"
-                placeholder="Confirm Password"
+                type="celular"
+                placeholder="Célular"
             />
             </div>
             <div className="py-4">
