@@ -6,6 +6,7 @@ import { AuthContextProps } from "../../Auth";
 import { LoginType } from "../../Hooks/usePostLogin";
 import { usePostLogin, LOADING_STATUS } from "../../Hooks/usePostLogin";
 import { LoadingSpinner } from "../../components/LoadingSpinner";
+import { supabase } from "@/supabase";
 
 interface FormData {
     auth: AuthContextProps
@@ -24,37 +25,92 @@ const Ingresar = () => {
     const [errorMensaje, setErrorMensaje] = React.useState<string | null>(null);
     const [isLoading, setIsLoading] = React.useState<string>('')
 
-    
-    const login = async (e: React.FormEvent<HTMLFormElement>) =>{
-        e.preventDefault()
-        setIsLoading(LOADING_STATUS)
-        const preAPI = process.env.API
-        const postAPI = 'user/login'
-        try {
-          if (form.current) {
-            const formData = new FormData(form.current);
-            const data: FormData = {
-              auth: auth,
-              API: `${preAPI}/${postAPI}`,
-              email: formData.get('email') as string,
-              password: formData.get('password') as string
-            };
-            console.log('DataIngresar: ', data)
-            const response = await OnFormSubmit(data);
-            console.log('Response: ', response)
-    
-            if (response && response.answer !== undefined) {
-              setErrorMensaje(response.answer);
-            } else {
-              setErrorMensaje(null);
-            }
+
+    const login = async (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      setIsLoading(LOADING_STATUS);
+
+      try {
+        if (form.current) {
+          const formData = new FormData(form.current);
+          const email = formData.get('email') as string;
+          const password = formData.get('password') as string;
+
+          console.log('DataIngresar: ', { email, password });
+
+          const { data, error } = await supabase.auth.signInWithPassword({
+            email,
+            password,
+          });
+
+          console.log('Response: ', data);
+
+          if (error) {
+            setErrorMensaje(error.message);
+          } else if (data) {
+            setErrorMensaje('Login successful');
           } else {
-            console.error('form.current es nulo');
+            setErrorMensaje(null);
           }
-        } finally {
-          setIsLoading(''); // Restablecer el estado de isLoading después de la solicitud
+        } else {
+          console.error('form.current es nulo');
         }
+      } catch (error) {
+        console.error('Error during login:', error);
+        setErrorMensaje('An unexpected error occurred');
+      } finally {
+        setIsLoading(''); // Restablecer el estado de isLoading después de la solicitud
       }
+    };
+
+    // Ejemplo de uso del componente
+    // const LoginForm = () => {
+    //   const [isLoading, setIsLoading] = useState('');
+    //   const [errorMensaje, setErrorMensaje] = useState<string | null>(null);
+    //   const form = useRef<HTMLFormElement>(null);
+
+    //   return (
+    //     <form ref={form} onSubmit={login}>
+    //       <input type="email" name="email" placeholder="Email" required />
+    //       <input type="password" name="password" placeholder="Password" required />
+    //       <button type="submit" disabled={isLoading === LOADING_STATUS}>
+    //         {isLoading === LOADING_STATUS ? 'Loading...' : 'Login'}
+    //       </button>
+    //       {errorMensaje && <p>{errorMensaje}</p>}
+    //     </form>
+    //   );
+    // };
+
+    // const login = async (e: React.FormEvent<HTMLFormElement>) =>{
+    //     e.preventDefault()
+    //     setIsLoading(LOADING_STATUS)
+    //     const preAPI = process.env.API
+    //     const postAPI = 'user/login'
+    //     try {
+    //       if (form.current) {
+    //         const formData = new FormData(form.current);
+    //         const data: FormData = {
+    //           auth: auth,
+    //           API: `${preAPI}/${postAPI}`,
+    //           email: formData.get('email') as string,
+    //           password: formData.get('password') as string
+    //         };
+    //         console.log('DataIngresar: ', data)
+    //         const response = await OnFormSubmit(data);
+    //         console.log('Response: ', response)
+    
+    //         if (response && response.answer !== undefined) {
+    //           setErrorMensaje(response.answer);
+    //         } else {
+    //           setErrorMensaje(null);
+    //         }
+    //       } else {
+    //         console.error('form.current es nulo');
+    //       }
+    //     } finally {
+    //       setIsLoading(''); // Restablecer el estado de isLoading después de la solicitud
+    //     }
+    //   }
 
     
     

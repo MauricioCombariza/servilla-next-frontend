@@ -1,0 +1,45 @@
+{
+    "name": "Servilla SAS - logística personalizada",
+    "short_name": "Servilla",
+    "icons": [
+      {
+        "src": "/icons/android-chrome-192x192.png",
+        "sizes": "192x192",
+        "type": "image/png"
+      },
+      {
+        "src": "/icons/android-chrome-512x512.png",
+        "sizes": "512x512",
+        "type": "image/png"
+      },
+      {
+        "src": "/icons/apple-touch-icon.png",
+        "sizes": "180x180",
+        "type": "image/png"
+      },
+      {
+        "src": "/icons/favicon-16x16.png",
+        "sizes": "16x16",
+        "type": "image/png"
+      },
+      {
+        "src": "/icons/favicon-32x32.png",
+        "sizes": "32x32",
+        "type": "image/png"
+      },
+      {
+        "src": "/icons/mstile-150x150.png",
+        "sizes": "270x270",
+        "type": "image/png"
+      }
+    ],
+    "start_url": "/",
+    "display": "standalone",
+    "scope": ".",
+    "orientation": "portrait-primary",
+    "background_color": "#2d3436",
+    "theme_color": "#00b894",
+    "description": "Servilla SAS - logística personalizada",
+    "lang": "es",
+    "dir": "ltr"
+  }
