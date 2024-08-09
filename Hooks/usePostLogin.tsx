@@ -12,7 +12,7 @@ export const LOADING_STATUS = "LOADING"
 export const ERROR_STATUS = "ERROR"
 
 
-const usePostLogin = async (user) => {
+// const usePostLogin = async (user) => {
 // const usePostLogin = async (loginData: LoginType) => {
 //   // console.log('LoginData: ', loginData)
 //   const startTimestamp = performance.now();
@@ -43,5 +43,5 @@ const usePostLogin = async (user) => {
 //   return answer;
 // };
 
-export { usePostLogin };
+// export { usePostLogin };
 
