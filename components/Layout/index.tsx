@@ -11,7 +11,7 @@ const Layout: React.FC<Props> = ({children}) => {
   return (
     <div className='flex flex-col mt-24 lg:mt-20'>
         {children}
-        <GoogleTagManager gtmId="G-JCQST79BSL" />
+        <GoogleTagManager gtmId="GTM-MZBMVT97" />
         <GoogleAnalytics gaId="G-10H68Q33ER" />
     </div>
   )

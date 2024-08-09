@@ -13,8 +13,8 @@ interface FoxResponse {
 
 const Indice: React.FC = () => {
     const auth = useAuth() as AuthContextProps
-    const perfil = auth.user.perfil
-    const company = auth.user.company
+    const perfil = auth.user.rol
+    const company = auth.user.id_bodega
     // console.log('User: ', auth.user)
     // console.log('Company:',company)
     const [imageUrl, setImageUrl] = React.useState<string>('');

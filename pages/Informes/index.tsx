@@ -6,7 +6,7 @@ import { useEffect } from "react";
 
 const Informes: React.FC = () => {
   const auth = useAuth();
-  const perfil = auth.user.perfil;
+  const perfil = auth.user.rol;
   const router = useRouter();
 
   useEffect(() => {

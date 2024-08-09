@@ -8,7 +8,7 @@ import { useRouter } from 'next/router';
 const InformesDisponibles: () => JSX.Element | null = () => {
 
   const auth = useAuth()
-  const company = auth.user.company;
+  const company = auth.user.id_bodega;
   const router = useRouter()
   // const navigate = useNavigate()
   

@@ -1,12 +1,13 @@
 import React, { useContext, createContext, useState } from "react";
 import { useRouter } from "next/router";
+import { supabase } from "@/supabase";
 // import { useNavigate, Navigate } from "react-router-dom";
 
 interface User {
   email: string;
-  username: string;
-  company: number
-  perfil: number
+  nombre: string;
+  id_bodega: number
+  rol: number
   activate: number
 }
 
@@ -15,9 +16,7 @@ export interface AuthContextProps {
   user: User;
   token: string;
   setToken: (token: string) => void;
-  login: (token: string
-    , user: User
-    ) => void;
+  login: (userId: string) => void;
   signup: () => void;
   logout: () => void;
   isMensajero: boolean,
@@ -28,10 +27,10 @@ const AuthContext = createContext<AuthContextProps>({
   authorized: false,
   user: {
     email: '',
-    username: '',
-    company: 1,
+    nombre: '',
+    id_bodega: 1,
     activate: 1,
-    perfil: 1
+    rol: 1
   },
   token: '',
   setToken: () => {
@@ -54,10 +53,10 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const [user, setUser] = useState({
     email: '',
-    username: '',
-    company: 1,
+    nombre: '',
+    id_bodega: 1,
     activate: 1,
-    perfil: 1
+    rol: 1
   })
   const [authorized, setAuthorized] = useState(false)
   const [token, setToken] = useState('')
@@ -65,12 +64,36 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
   // Estado para mostrar o no el input en el formulario para filtrar este informe
   const [ isMensajero, setIsMensajero] = useState<boolean>(false)
 
-  const login = (token: string
-    , user: User
-    ) => {
-    setToken(token)
-    setUser(user)
-    setAuthorized(true)
+  const login = async (userId: string) => {
+    console.log('Ingreso a login')
+    const { data, error } = await supabase
+      .from('usuarios')
+      .select('*') // Select all columns
+      .eq('id_uuid', userId);
+
+      console.log('DataUsuario:', data)
+  
+    if (error) {
+      console.log('Error fetching user data:', error.message);
+      return;
+    }
+    if (!data || data.length === 0) {
+      console.log('No user data found');
+      return;
+    }
+  
+    const fetchedUser = data[0] as User; // Type assertion for clarity
+  
+    // Update user state while preserving immutability
+    setUser((prevUser) => ({
+      ...prevUser,
+      email: fetchedUser.email,
+      nombre: fetchedUser.nombre,
+      id_bodega: fetchedUser.id_bodega,
+      rol: fetchedUser.rol,
+    }));
+  
+    setAuthorized(true);
     router.push("/Indice");
   };
   const signup = () => {
@@ -85,10 +108,10 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
   const logout = () => {
     setUser({
       email: '',
-      username: '',
-      company: 1,
+      nombre: '',
+      id_bodega: 1,
       activate: 1,
-      perfil: 1
+      rol: 1
     });
     router.push("/");
     setAuthorized(false)
