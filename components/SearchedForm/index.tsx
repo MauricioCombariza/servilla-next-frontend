@@ -88,7 +88,7 @@ const SearchedForm = () => {
   return (
     <Container>
         <Container maxWidth="md">
-          <h2 className='text-2xl mt-2'>{user?.username} tus busquedas:</h2>
+          <h2 className='text-2xl mt-2'>{user?.nombre} tus busquedas:</h2>
     <form
         method="post"
         className="container mt-10 lg:px-20 lg:m-20 mx-2 bg-gray-200 rounded-sm"

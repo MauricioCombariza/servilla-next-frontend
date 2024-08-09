@@ -6,7 +6,7 @@ import { useRouter } from 'next/router';
 const Servilla: () => JSX.Element | null = () => {
   const auth = useAuth()
   const router = useRouter();
-  const perfil = auth.user.perfil
+  const perfil = auth.user.rol
   
   if (perfil && perfil > 2) {
     return (

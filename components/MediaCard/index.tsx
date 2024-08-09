@@ -23,8 +23,8 @@ export interface MediaCardType {
 function MediaCard({serial, company, nombre, direccion, ciudad, codigo, dirnum, inicio, medio, final, retorno}: MediaCardType) {
 
   const auth = useAuth()
-  const perfil = auth.user.perfil
-  const empresa = auth.user.company
+  const perfil = auth.user.rol
+  const empresa = auth.user.id_bodega
 
   if (serial) {
     if (perfil > 2) {

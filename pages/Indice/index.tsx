@@ -46,7 +46,7 @@ const Indice: React.FC = () => {
   return (
     <Layout>
         <div className='container mx-3'>
-            <p className="flex justify-center items-center text-ser text-2xl  my-5 lg:my-10">Bienvenido {auth.user.username}</p>
+            <p className="flex justify-center items-center text-ser text-2xl  my-5 lg:my-10">Bienvenido {auth.user.nombre}</p>
             <div className='container flex flex-col lg:flex-row lg:justify-around justify-center items-center'>
                 <div className="flex flex-col gap-4  w-full lg:w-1/3 mt-5 justify-center items-center m-3 p-3">
                     {perfil > 4?
