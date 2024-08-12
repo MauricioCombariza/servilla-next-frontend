@@ -1,20 +1,29 @@
-import React from "react"
-import { GoogleTagManager, GoogleAnalytics } from '@next/third-parties/google'
-
+import React from "react";
+import { GoogleTagManager } from '@next/third-parties/google';
 
 interface Props {
-    children: React.ReactNode;
-  }
-  
-
-const Layout: React.FC<Props> = ({children}) => {
-  return (
-    <div className='flex flex-col mt-24 lg:mt-20'>
-        {children}
-        <GoogleTagManager gtmId="GTM-MZBMVT97" />
-        <GoogleAnalytics gaId="G-10H68Q33ER" />
-    </div>
-  )
+  children: React.ReactNode;
 }
 
-export  {Layout}
+const Layout: React.FC<Props> = ({ children }) => {
+  const gtmId = process.env.NEXT_PUBLIC_GOOGLE_TAG_MANAGER_ID || 'default-gtm-id';
+
+  return (
+    <div className='flex flex-col mt-24 lg:mt-20'>
+      <GoogleTagManager gtmId={gtmId} />
+      <body>
+        <noscript>
+          <iframe
+            src={`https://www.googletagmanager.com/ns.html?id=${gtmId}`}
+            height="0"
+            width="0"
+            style={{ display: "none", visibility: "hidden" }}
+          ></iframe>
+        </noscript>
+        {children}
+      </body>
+    </div>
+  );
+}
+
+export { Layout };
