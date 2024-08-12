@@ -6,7 +6,6 @@ import type { AppProps } from 'next/app';
 import { NavBar } from '@/components/NavBar/NavBarTailwind';
 import Script from 'next/script';
 import { InstallBanner } from '@/components/InstallBanner';
-import { initGA, logPageView } from '@/utils/analytics';
 import { useEffect, FC } from 'react'; // Importa useEffect
 import ServiceWorkerRegistration from '@/components/ServiceWorkersRegister';
 
@@ -17,22 +16,7 @@ interface MyAppProps {
 
 const MyApp: FC<MyAppProps> = ({ Component, pageProps }) => {
     const router = useRouter();
-  
-    useEffect(() => {
-      initGA();
-      logPageView(window.location.pathname); // Pasa la URL actual
-  
-      const handleRouteChange = (url: string) => {
-        logPageView(url);
-      };
-  
-      router.events.on('routeChangeComplete', handleRouteChange);
-  
-      return () => {
-        router.events.off('routeChangeComplete', handleRouteChange);
-      };
-    }, [router.events]);
-  
+      
   return (
     <AuthProvider>
       <Head>
