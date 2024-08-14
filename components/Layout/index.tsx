@@ -11,7 +11,7 @@ const Layout: React.FC<Props> = ({ children }) => {
   return (
     <div className='flex flex-col mt-24 lg:mt-20'>
       <GoogleTagManager gtmId={gtmId} />
-      <body>
+      
         <noscript>
           <iframe
             src={`https://www.googletagmanager.com/ns.html?id=${gtmId}`}
@@ -21,7 +21,7 @@ const Layout: React.FC<Props> = ({ children }) => {
           ></iframe>
         </noscript>
         {children}
-      </body>
+      
     </div>
   );
 }
