@@ -5,16 +5,23 @@ interface Props {
   children: React.ReactNode;
 }
 
+interface GTMConfig {
+  gtmId: string;
+  // Add other GTM-related properties if needed
+}
+
 const Layout: React.FC<Props> = ({ children }) => {
-  const gtmId = process.env.NEXT_PUBLIC_GOOGLE_TAG_MANAGER_ID || 'default-gtm-id';
+  const gtmConfig: GTMConfig = {
+    gtmId: process.env.NEXT_PUBLIC_GOOGLE_TAG_MANAGER_ID?.toString() || 'default-gtm-id',
+  };
 
   return (
     <div className='flex flex-col mt-24 lg:mt-20'>
-      <GoogleTagManager gtmId={gtmId} />
+      <GoogleTagManager {...gtmConfig} />
       
         <noscript>
           <iframe
-            src={`https://www.googletagmanager.com/ns.html?id=${gtmId}`}
+            src={`https://www.googletagmanager.com/ns.html?id=${gtmConfig}`}
             height="0"
             width="0"
             style={{ display: "none", visibility: "hidden" }}

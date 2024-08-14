@@ -11,7 +11,7 @@ interface FoxResponse {
     image: string;
   }
 
-const Indice: React.FC = () => {
+const Indice = () => {
     const auth = useAuth() as AuthContextProps
     const perfil = auth.user.rol
     const company = auth.user.id_bodega
