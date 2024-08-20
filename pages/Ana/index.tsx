@@ -1,5 +1,5 @@
 import { useMachine } from '@xstate/react';
-import automateMachine from '../../Automatized/ana';
+import automateMachine from '../../Automatized/Ana';
 import React, { useState, ChangeEvent } from 'react';
 
 

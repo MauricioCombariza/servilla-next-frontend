@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { registerRoute } from 'workbox-routing';
 import { StaleWhileRevalidate, CacheFirst } from 'workbox-strategies';
 
-export default function ServiceWorkerRegistration() {
+const ServiceWorkerRegistration = () => {
   useEffect(() => {
     if ('serviceWorker' in navigator) {
       console.log('Service Worker is supported in this browser.');
@@ -40,3 +40,5 @@ export default function ServiceWorkerRegistration() {
 
   return null;
 }
+
+export { ServiceWorkerRegistration };

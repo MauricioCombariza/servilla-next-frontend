@@ -10,8 +10,8 @@ interface Props {
 const Layout: React.FC<Props> = ({children}) => {
   return (
     <div className='flex flex-col mt-24 lg:mt-20'>
-        {children}
         <GoogleTagManager gtmId="G-JCQST79BSL" />
+        {children}
     </div>
   )
 }

@@ -4,6 +4,7 @@
 import React, { useState } from "react";
 import { supabase } from "@/supabase";
 import { API_SER } from "@/pages/api";
+import e from "express";
 
 type ConsumoItem = {
     id: number;
@@ -55,13 +56,18 @@ const ConsumoPorOrden = ({handleCancel, send, handleInitial}: {handleCancel: () 
   const handleOrdenSubmit = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`${API_SER}/order_summary/${orden}`);
-      if (!response.ok) {
-        throw new Error("Error al obtener el consumo de la orden");
-      }
-      const data = await response.json();
-      setConsumo(data);
-      setError("");
+      const { data, error } = await supabase
+      .from('suborders_summary_by_order_and_alias')
+      .select('orden, alias, total_quantity')
+      .eq('orden', orden);
+      console.log('Data',data); 
+      // const response = await fetch(`${API_SER}/order_summary/${orden}`);
+      // if (!response.ok) {
+      //   throw new Error("Error al obtener el consumo de la orden");
+      // }
+      // const data = await response.json();
+      // setConsumo(data);
+    //   setError("");
     } catch (error) {
       if (error instanceof Error) {
         setError(error.message);

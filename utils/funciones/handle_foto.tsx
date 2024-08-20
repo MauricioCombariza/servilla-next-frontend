@@ -1,4 +1,4 @@
-import { pago_endpoint } from "./endpoint";
+import { PagoEndpoint } from "./endpoint/PagoEndPoint";
 import { Request, Response } from 'express';
 
 export const handleFoto_base = async ({
@@ -100,7 +100,7 @@ export const handleFoto_base = async ({
   } as unknown as Response;
 
   // Llamar a la función cajoneras_endpoint
-  const respuesta = await pago_endpoint(req, res);
+  const respuesta = await PagoEndpoint(req, res);
   if (respuesta) {
     send({ type: moduloSiguiente });
   }

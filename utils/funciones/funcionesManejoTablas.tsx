@@ -36,7 +36,7 @@ export const buscarSerial = async(serial: string, tabla: string) => {
       }
       return true}
 
-export const update_estado = async(serial: string, tabla: string, estado: string) => {
+export const updateEstado = async(serial: string, tabla: string, estado: string) => {
     const { data, error } = await supabase
     .from(tabla)
     .update({ estado: estado })
@@ -46,7 +46,7 @@ export const update_estado = async(serial: string, tabla: string, estado: string
     }
     return data}
 
-export const update_estado_codmen = async(serial: string, tabla: string, estado: string, cod_men: string) => {
+export const updateEstadoCodmen = async(serial: string, tabla: string, estado: string, cod_men: string) => {
     const { data, error } = await supabase
     .from(tabla)
     .update({ estado: estado, cod_men: cod_men })
@@ -56,7 +56,7 @@ export const update_estado_codmen = async(serial: string, tabla: string, estado:
     }
     return data}
 
-export const user_actual = async () => {
+export const userActual = async () => {
       const { data, error } = await supabase.auth.getUser();
       if (error) {
         throw error;
@@ -64,14 +64,14 @@ export const user_actual = async () => {
       return data.user?.email;
     };
 
-export const insert_cajoneras = async(serial: string, cod_men: string) => {
+export const insertCajoneras = async(serial: string, cod_men: string) => {
 
     const { data, error } = await supabase
     .from('cajoneras')
     .insert([
       { serial: serial,
         cod_men: cod_men,
-        actualizado_por: await user_actual() 
+        actualizado_por: await userActual() 
       }
     ])
     if (error) {
@@ -86,7 +86,7 @@ export const insertarEstadoDinero = async(
   valorConsignacion: number,
   tipoDePago: string
 ) => {
-  const actualizadoPor = await user_actual() || '';
+  const actualizadoPor = await userActual() || '';
   const { data, error } = await supabase
       .from('estado_dinero')
       .insert([

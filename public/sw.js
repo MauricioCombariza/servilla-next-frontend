@@ -38,6 +38,11 @@ self.addEventListener('install', event => {
 
 // Fetch
 self.addEventListener('fetch', event => {
+  // Filtrar solo solicitudes GET y evitar las solicitudes de chrome-extension
+  if (event.request.method !== 'GET' || event.request.url.startsWith('chrome-extension')) {
+    return;
+  }
+
   event.respondWith(
     caches.match(event.request)
       .then(response => {
@@ -46,12 +51,23 @@ self.addEventListener('fetch', event => {
         }
         return fetch(event.request)
           .then(response => {
-            return caches.open(CACHE_NAME)
+            // Verifica si la respuesta es válida antes de cachearla
+            if (!response || response.status !== 200 || response.type !== 'basic') {
+              return response;
+            }
+
+            // Cachea solo solicitudes GET válidas
+            const responseToCache = response.clone();
+            caches.open(CACHE_NAME)
               .then(cache => {
-                cache.put(event.request, response.clone());
-                return response;
+                cache.put(event.request, responseToCache);
               });
+
+            return response;
           });
+      })
+      .catch(error => {
+        console.error('Error al responder desde el caché o la red', error);
       })
   );
 });
@@ -69,18 +85,5 @@ self.addEventListener('activate', event => {
         })
       );
     })
-  );
-});
-
-// Intercepción de las solicitudes de red
-self.addEventListener('fetch', event => {
-  event.respondWith(
-    caches.match(event.request)
-      .then(response => {
-        return response || fetch(event.request);
-      })
-      .catch(error => {
-        console.error('Error al responder desde el caché o la red', error);
-      })
   );
 });

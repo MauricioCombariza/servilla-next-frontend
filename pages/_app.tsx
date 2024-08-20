@@ -6,9 +6,7 @@ import type { AppProps } from 'next/app';
 import { NavBar } from '@/components/NavBar/NavBarTailwind';
 import Script from 'next/script';
 import { InstallBanner } from '@/components/InstallBanner';
-import { initGA, logPageView } from '@/utils/analytics';
 import { useEffect, FC } from 'react'; // Importa useEffect
-import ServiceWorkerRegistration from '@/components/ServiceWorkersRegister';
 
 interface MyAppProps {
   Component: FC;
@@ -17,21 +15,21 @@ interface MyAppProps {
 
 const MyApp: FC<MyAppProps> = ({ Component, pageProps }) => {
     const router = useRouter();
-  
     useEffect(() => {
-      initGA();
-      logPageView(window.location.pathname); // Pasa la URL actual
+      if ('serviceWorker' in navigator) {
+        if (process.env.NODE_ENV === 'production') {
+          navigator.serviceWorker.register('/sw.js').catch(registrationError => {
+            console.log('SW registration failed: ', registrationError);
+          });
+        } else {
+          navigator.serviceWorker.getRegistrations().then(registrations => {
+            registrations.forEach(registration => registration.unregister());
+          });
+        }
+      }
+    }, []);
   
-      const handleRouteChange = (url: string) => {
-        logPageView(url);
-      };
-  
-      router.events.on('routeChangeComplete', handleRouteChange);
-  
-      return () => {
-        router.events.off('routeChangeComplete', handleRouteChange);
-      };
-    }, [router.events]);
+    
   
   return (
     <AuthProvider>
@@ -85,7 +83,6 @@ const MyApp: FC<MyAppProps> = ({ Component, pageProps }) => {
       </Head>
       <NavBar />
       <Component {...pageProps} />
-      <ServiceWorkerRegistration />
       <InstallBanner />
     </AuthProvider>
   );

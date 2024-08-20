@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { API_SER } from "@/pages/api";
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
-import { cajoneras_endpoint } from "@/utils/funciones/endpoint";
+import { CajonerasEndpoint } from "@/utils/funciones/endpoint/CajonerasEndpoint";
 
 
 interface CajonerasProps {
@@ -49,7 +49,7 @@ const Cajoneras: React.FC<CajonerasProps> = ({ username, modulos_admon, handleIn
       } as unknown as Response;
     
       // Llamar a la función cajoneras_endpoint
-      const response = await cajoneras_endpoint(req, res);
+      const response = await CajonerasEndpoint(req, res);
       // console.log('Response:', response.body);
       if (response.statusCode !== 200) {
         const data = await response.json();

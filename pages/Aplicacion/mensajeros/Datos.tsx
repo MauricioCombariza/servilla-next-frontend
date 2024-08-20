@@ -1,6 +1,6 @@
 import React, { ChangeEvent, FC, MouseEvent } from 'react';
 import { API_SER } from '@/pages/api';
-import { buscarSerial } from '@/utils/funciones/funciones_manejo_tablas';
+import { buscarSerial } from '@/utils/funciones/funcionesManejoTablas';
 
 interface DatosProps {
   setGuideNumber: (guideNumber: string) => void;

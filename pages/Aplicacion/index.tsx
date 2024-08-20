@@ -1,5 +1,5 @@
 import { useMachine } from '@xstate/react';
-import automateMachine from '../../Automatized/entregarPaquetes';
+import automateMachine from '../../Automatized/EntregarPaquetes';
 import React, { useState, ChangeEvent, use } from 'react';
 import IngresoAdmon from './aministracion/IngresoAdmon';
 import ModulosAdmon from './aministracion/ModulosAdmon';
